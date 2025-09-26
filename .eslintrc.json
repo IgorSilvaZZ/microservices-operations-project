@@ -1,0 +1,64 @@
+{
+	"env": {
+		"es2022": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"@typescript-eslint/recommended",
+		"prettier"
+	],
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"plugins": ["@typescript-eslint", "import", "unused-imports", "prettier"],
+	"rules": {
+		// Remove imports não utilizados automaticamente
+		"unused-imports/no-unused-imports": "error",
+
+		// Avisa sobre variáveis não utilizadas (impede build)
+		"@typescript-eslint/no-unused-vars": [
+			"error",
+			{
+				"argsIgnorePattern": "^_",
+				"varsIgnorePattern": "^_"
+			}
+		],
+
+		// Remove vírgulas no final (trailing commas)
+		"comma-dangle": ["error", "never"],
+
+		// Organização de imports
+		"import/order": [
+			"error",
+			{
+				"groups": [
+					"builtin",
+					"external",
+					"internal",
+					"parent",
+					"sibling",
+					"index"
+				],
+				"newlines-between": "always",
+				"alphabetize": {
+					"order": "asc",
+					"caseInsensitive": true
+				}
+			}
+		],
+
+		// Sem linhas em branco múltiplas
+		"no-multiple-empty-lines": ["error", { "max": 1 }],
+
+		// Sempre usar aspas simples
+		"quotes": ["error", "single"],
+
+		// Sempre usar ponto e vírgula
+		/* "semi": ["error", "always"] */
+
+		"prettier/prettier": "error"
+	}
+}
