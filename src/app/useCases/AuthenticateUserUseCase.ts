@@ -4,10 +4,14 @@ import {
 	AuthenticateUserRequest
 } from '@ports/AuthenticateUser'
 
-import { UserRepository } from '../../domain/ports/UserRepository'
+import { PasswordHasher } from '@ports/PasswordHasher'
+import { UserRepository } from '@ports/UserRepository'
 
 export class AuthenticateUserUseCase implements AuthenticateUser {
-	constructor(private userRepository: UserRepository) {}
+	constructor(
+		private userRepository: UserRepository,
+		private passwordHasher: PasswordHasher
+	) {}
 
 	async authenticate({
 		email,
@@ -20,12 +24,17 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 			throw new Error('User not found!')
 		}
 
+		if (!(await this.passwordHasher.compare(password, userExists.password))) {
+			// TODO: create custom errors and change this instance
+			throw new Error('Email/Password is incorrect!')
+		}
+
 		const propsUser: UserProps = {
 			id: userExists.id,
 			name: userExists.name,
 			email: userExists.email,
 			password: userExists.password,
-			subId: userExists.subId,
+			subId: userExists.subId, // Trocar pelo subId gerado pelo cognito
 			createdAt: userExists.createdAt,
 			updatedAt: userExists.updatedAt
 		}
