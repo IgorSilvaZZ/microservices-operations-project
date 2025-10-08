@@ -1,0 +1,9 @@
+services:
+  db-auth:
+    image: bitnami/postgresql:latest
+    ports:
+      - '5483:5432'
+    environment:
+      - POSTGRES_USER=ms-auth-dev
+      - POSTGRES_PASSWORD=ms-auth-dev
+      - POSTGRES_DB=authDev
