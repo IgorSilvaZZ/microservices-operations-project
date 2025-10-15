@@ -21,7 +21,8 @@
 			"@entities/*": ["./src/domain/entities/*"],
 			"@ports/*": ["./src/domain/ports/*"],
 			"@adapters/*": ["./src/app/adapters/*"],
-			"@useCases/*": ["./src/app/useCases/*"]
+			"@useCases/*": ["./src/app/useCases/*"],
+			"@test/*": ["./src/test/*"]
 		}
 	},
 	"include": ["src/**/*"],
