@@ -1,44 +1,44 @@
-import { User, UserProps } from '@entities/User'
 import {
 	AuthenticateUser,
-	AuthenticateUserRequest
+	AuthenticateUserRequest,
+	AuthenticateUserResponse
 } from '@ports/AuthenticateUser'
 
 import { PasswordHasher } from '@ports/PasswordHasher'
 import { UserRepository } from '@ports/UserRepository'
+import { AuthenticateProvider } from '@ports/AuthenticateProvider'
 
 export class AuthenticateUserUseCase implements AuthenticateUser {
 	constructor(
 		private userRepository: UserRepository,
-		private passwordHasher: PasswordHasher
+		private passwordHasher: PasswordHasher,
+		private authenticationProvider: AuthenticateProvider
 	) {}
 
 	async authenticate({
 		email,
 		password
-	}: AuthenticateUserRequest): Promise<User> {
-		const userExists = await this.userRepository.findByEmail(email)
+	}: AuthenticateUserRequest): Promise<AuthenticateUserResponse> {
+		const user = await this.userRepository.findByEmail(email)
 
-		if (!userExists) {
+		if (!user) {
 			// TODO: create custom errors and change this instance
 			throw new Error('User not found!')
 		}
 
-		if (!(await this.passwordHasher.compare(password, userExists.password))) {
+		if (!(await this.passwordHasher.compare(password, user.password))) {
 			// TODO: create custom errors and change this instance
 			throw new Error('Email/Password is incorrect!')
 		}
 
-		const propsUser: UserProps = {
-			id: userExists.id,
-			name: userExists.name,
-			email: userExists.email,
-			password: userExists.password,
-			subId: userExists.subId, // Trocar pelo subId gerado pelo cognito
-			createdAt: userExists.createdAt,
-			updatedAt: userExists.updatedAt
-		}
+		const { accessToken } = await this.authenticationProvider.authenticate(
+			email,
+			password
+		)
 
-		return userExists
+		return {
+			user,
+			token: accessToken
+		}
 	}
 }

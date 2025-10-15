@@ -5,6 +5,11 @@ export interface AuthenticateUserRequest {
 	password: string
 }
 
+export interface AuthenticateUserResponse {
+	user: User
+	token: string
+}
+
 export interface AuthenticateUser {
-	authenticate(data: AuthenticateUserRequest): Promise<User>
+	authenticate(data: AuthenticateUserRequest): Promise<AuthenticateUserResponse>
 }

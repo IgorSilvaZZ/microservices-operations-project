@@ -5,6 +5,7 @@ export interface UserProps {
 	name: string
 	email: string
 	password: string
+	profileId: string
 	subId: string
 	createdAt?: Date
 	updatedAt?: Date
@@ -16,6 +17,7 @@ export class User {
 	private _name: string
 	private _email: string
 	private _password: string
+	private _profileId: string
 	private _subId: string
 	private _createdAt: Date
 	private _updatedAt: Date
@@ -26,6 +28,7 @@ export class User {
 		this._name = props.name
 		this._email = props.email
 		this._password = props.password
+		this._profileId = props.profileId
 		this._subId = props.subId
 		this._createdAt = props.createdAt ?? new Date()
 		this._updatedAt = props.updatedAt ?? new Date()
@@ -45,6 +48,10 @@ export class User {
 
 	get password(): string {
 		return this._password
+	}
+
+	get profileId(): string {
+		return this._profileId
 	}
 
 	get subId(): string {
@@ -77,6 +84,12 @@ export class User {
 
 	set password(newPassword: string) {
 		this._password = newPassword
+
+		this.syncUpdatedAt()
+	}
+
+	set profileId(newProfileId: string) {
+		this._profileId = newProfileId
 
 		this.syncUpdatedAt()
 	}
