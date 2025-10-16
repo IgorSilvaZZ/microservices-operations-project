@@ -7,7 +7,7 @@
 		"dev": "tsx watch src/index.ts",
 		"build": "tsc",
 		"start": "node dist/index.js",
-		"test": "vitest run",
+		"test": "vitest run --silent",
 		"test:watch": "vitest watch",
 		"lint:check": "eslint src --ext .ts,.js",
 		"lint:fix": "eslint src --ext .ts,.js --fix",
@@ -27,6 +27,7 @@
 		"prettier": "^3.6.2",
 		"tsx": "^4.20.6",
 		"typescript": "^5.9.2",
+		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^3.2.4"
 	},
 	"dependencies": {

@@ -23,7 +23,7 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 
 		if (!user) {
 			// TODO: create custom errors and change this instance
-			throw new Error('User not found!')
+			throw new Error('Email/Password is incorrect!')
 		}
 
 		if (!(await this.passwordHasher.compare(password, user.password))) {
@@ -31,14 +31,20 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 			throw new Error('Email/Password is incorrect!')
 		}
 
-		const { accessToken } = await this.authenticationProvider.authenticate(
-			email,
-			password
-		)
+		try {
+			const { accessToken } = await this.authenticationProvider.authenticate(
+				email,
+				password
+			)
 
-		return {
-			user,
-			token: accessToken
+			return {
+				user,
+				token: accessToken
+			}
+		} catch (error) {
+			console.log(error)
+
+			throw new Error('Error authenticate provider!')
 		}
 	}
 }
