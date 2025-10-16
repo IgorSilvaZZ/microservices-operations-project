@@ -25,12 +25,17 @@
 		"eslint-plugin-prettier": "^5.5.4",
 		"eslint-plugin-unused-imports": "^4.2.0",
 		"prettier": "^3.6.2",
+		"prisma": "^6.17.1",
 		"tsx": "^4.20.6",
 		"typescript": "^5.9.2",
 		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^3.2.4"
 	},
 	"dependencies": {
-		"bcryptjs": "^3.0.2"
+		"@aws-sdk/client-cognito-identity-provider": "^3.911.0",
+		"@prisma/client": "^6.17.1",
+		"bcryptjs": "^3.0.2",
+		"dotenv": "^17.2.3",
+		"zod": "^4.1.12"
 	}
 }
