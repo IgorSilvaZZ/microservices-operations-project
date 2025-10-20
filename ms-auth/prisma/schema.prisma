@@ -14,10 +14,110 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum OrdersStatus {
+  PENDING
+  PROCESSING
+  REPROVED
+  APPROVED
+  FINISHED
+}
+
+enum OperationsStatus {
+  PENDING
+  PROCESSING
+  MANAGER_APPROVING
+  FINANCIAL_APPROVING
+  PAID
+  FINANCIAL_REPROVED
+  MANAGER_REPROVED
+}
+
 model Profile {
   id String @id @default(uuid())
   description String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   deletedAt DateTime?
+
+  users Users[]
+  profilePermissions ProfilePermissions[]
+}
+
+model Permissions {
+  id String @id @default(uuid())
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
+
+  profilePermissions ProfilePermissions[]
+}
+
+model ProfilePermissions {
+  id String @id @default(uuid())
+  profileId String
+  permissionId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
+
+  profile Profile @relation(fields: [profileId], references: [id])
+  permission Permissions @relation(fields: [permissionId], references: [id])
+}
+
+model Users {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
+  profileId String
+  subId String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
+
+  profile Profile @relation(fields: [profileId], references: [id])
+
+  orders Orders[]
+  operations Operations[]
+}
+
+model Orders {
+  id String @id @default(uuid())
+  number String
+  status OrdersStatus @default(PENDING)
+  description String
+  userId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
+
+  user Users @relation(fields: [userId], references: [id])
+
+  operationsOrders OperationsOrders[]
+}
+
+model Operations {
+  id String @id @default(uuid())
+  status OperationsStatus @default(PENDING)
+  userId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
+
+  user Users @relation(fields: [userId], references: [id])
+
+  operationsOrders OperationsOrders[]
+}
+
+model OperationsOrders {
+  id String @id @default(uuid())
+  operationId String
+  orderId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
+
+  operation Operations @relation(fields: [operationId], references: [id])
+  order Orders @relation(fields: [orderId], references: [id])
 }
