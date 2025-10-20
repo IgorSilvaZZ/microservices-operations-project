@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -33,64 +32,64 @@ enum OperationsStatus {
 }
 
 model Profile {
-  id String @id @default(uuid())
+  id          String    @id @default(uuid())
   description String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  deletedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  deletedAt   DateTime?
 
-  users Users[]
+  users              Users[]
   profilePermissions ProfilePermissions[]
 }
 
 model Permissions {
-  id String @id @default(uuid())
-  name String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
   deletedAt DateTime?
 
   profilePermissions ProfilePermissions[]
 }
 
 model ProfilePermissions {
-  id String @id @default(uuid())
-  profileId String
+  id           String    @id @default(uuid())
+  profileId    String
   permissionId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  deletedAt DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @default(now())
+  deletedAt    DateTime?
 
-  profile Profile @relation(fields: [profileId], references: [id])
+  profile    Profile     @relation(fields: [profileId], references: [id])
   permission Permissions @relation(fields: [permissionId], references: [id])
 }
 
 model Users {
-  id String @id @default(uuid())
-  name String
-  email String @unique
-  password String
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
   profileId String
-  subId String @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  subId     String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
   deletedAt DateTime?
 
   profile Profile @relation(fields: [profileId], references: [id])
 
-  orders Orders[]
+  orders     Orders[]
   operations Operations[]
 }
 
 model Orders {
-  id String @id @default(uuid())
-  number String
-  status OrdersStatus @default(PENDING)
+  id          String       @id @default(uuid())
+  number      String
+  status      OrdersStatus @default(PENDING)
   description String
-  userId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  deletedAt DateTime?
+  userId      String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
+  deletedAt   DateTime?
 
   user Users @relation(fields: [userId], references: [id])
 
@@ -98,11 +97,11 @@ model Orders {
 }
 
 model Operations {
-  id String @id @default(uuid())
-  status OperationsStatus @default(PENDING)
-  userId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  id        String           @id @default(uuid())
+  status    OperationsStatus @default(PENDING)
+  userId    String
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @default(now())
   deletedAt DateTime?
 
   user Users @relation(fields: [userId], references: [id])
@@ -111,13 +110,13 @@ model Operations {
 }
 
 model OperationsOrders {
-  id String @id @default(uuid())
+  id          String    @id @default(uuid())
   operationId String
-  orderId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  deletedAt DateTime?
+  orderId     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now())
+  deletedAt   DateTime?
 
   operation Operations @relation(fields: [operationId], references: [id])
-  order Orders @relation(fields: [orderId], references: [id])
+  order     Orders     @relation(fields: [orderId], references: [id])
 }

@@ -22,7 +22,10 @@
 			"@ports/*": ["./src/domain/ports/*"],
 			"@adapters/*": ["./src/app/adapters/*"],
 			"@useCases/*": ["./src/app/useCases/*"],
-			"@test/*": ["./src/test/*"]
+			"@test/*": ["./src/test/*"],
+			"@infra/*": ["./src/app/infra/*"],
+			"@mappers/*": ["./src/app/mappers/*"],
+			"@factories/*": ["./src/app/factories/*"]
 		}
 	},
 	"include": ["src/**/*"],
