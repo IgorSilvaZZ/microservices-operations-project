@@ -1,6 +1,8 @@
 import { FastifyReply, FastifyRequest } from 'fastify'
 import z from 'zod'
 
+import { UserDomainToHttpMapper } from '@mappers/UserDomainToHttpMapper'
+
 import { makeAuthenticateUserUseCase } from '@factories/MakeAuthenticateUserUseCase'
 
 export async function authenticate(req: FastifyRequest, rep: FastifyReply) {
@@ -18,5 +20,7 @@ export async function authenticate(req: FastifyRequest, rep: FastifyReply) {
 		password
 	})
 
-	return rep.status(200).send({ user, token })
+	return rep
+		.status(200)
+		.send({ user: UserDomainToHttpMapper.toHttp(user), token })
 }

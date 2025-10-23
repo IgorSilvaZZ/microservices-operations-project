@@ -24,7 +24,7 @@
 			"@useCases/*": ["./src/app/useCases/*"],
 			"@test/*": ["./src/test/*"],
 			"@infra/*": ["./src/app/infra/*"],
-			"@mappers/*": ["./src/app/mappers/*"],
+			"@mappers/*": ["./src/app/infra/mappers/*"],
 			"@factories/*": ["./src/app/factories/*"]
 		}
 	},

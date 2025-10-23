@@ -1,3 +1,5 @@
+import { createHmac } from 'node:crypto'
+
 import {
 	CognitoIdentityProviderClient,
 	InitiateAuthCommand
@@ -17,16 +19,25 @@ export class AuthenticateProviderAdapter implements AuthenticateProvider {
 		this.client = new CognitoIdentityProviderClient({ region: 'us-east-1' })
 	}
 
+	private generateSecretHash(email: string) {
+		return createHmac('SHA256', env.COGNITO_CLIENT_SECRET)
+			.update(email + env.COGNITO_CLIENT_ID)
+			.digest('base64')
+	}
+
 	async authenticate(
 		email: string,
 		password: string
 	): Promise<AuthenticateProviderResponse> {
+		const secretHash = this.generateSecretHash(email)
+
 		const command = new InitiateAuthCommand({
 			AuthFlow: 'USER_PASSWORD_AUTH',
 			ClientId: env.COGNITO_CLIENT_ID,
 			AuthParameters: {
 				USERNAME: email,
-				PASSWORD: password
+				PASSWORD: password,
+				SECRET_HASH: secretHash
 			}
 		})
 

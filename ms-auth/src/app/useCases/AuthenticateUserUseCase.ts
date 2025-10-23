@@ -23,7 +23,7 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 
 		if (!user) {
 			// TODO: create custom errors and change this instance
-			throw new Error('Email/Password is incorrect!')
+			throw new Error('User not found!')
 		}
 
 		if (!(await this.passwordHasher.compare(password, user.password))) {

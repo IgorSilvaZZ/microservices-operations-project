@@ -17,9 +17,11 @@ app.setErrorHandler((error, _, reply) => {
 		})
 	}
 
-	if (env.NODE_ENV === 'prod') {
-		console.error(error)
+	if (error instanceof Error) {
+		return reply.status(400).send({ message: error.message })
 	}
+
+	console.error(error)
 
 	return reply.status(500).send({ message: 'Internal server error' })
 })
