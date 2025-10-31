@@ -19,7 +19,7 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 		email,
 		password
 	}: AuthenticateUserRequest): Promise<AuthenticateUserResponse> {
-		const user = await this.userRepository.findByEmail(email)
+		const user = await this.userRepository.findByEmailWithPermissions(email)
 
 		if (!user) {
 			// TODO: create custom errors and change this instance

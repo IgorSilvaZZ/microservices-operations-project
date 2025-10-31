@@ -1,15 +1,25 @@
 import { describe, expect, it } from 'vitest'
 import { randomUUID } from 'node:crypto'
 
-import { User } from './User'
+import { User, UserProps } from './User'
+import { Profile } from './Profile'
+import { Permissions } from './Permissions'
 
 describe('User Entity', () => {
-	const userProps = {
+	const userProps: UserProps = {
 		name: 'User Test',
 		email: 'user@test.com',
 		password: '123456',
 		profileId: 'profile-id',
-		subId: 'sub-id'
+		subId: 'sub-id',
+		profile: new Profile({
+			description: 'Profile Test',
+			permissions: [
+				new Permissions({ name: 'CREATE_ORDERS' }),
+				new Permissions({ name: 'GET_ORDERS' }),
+				new Permissions({ name: 'GET_OPERATIONS' })
+			]
+		})
 	}
 
 	it('should be able to create a user', () => {

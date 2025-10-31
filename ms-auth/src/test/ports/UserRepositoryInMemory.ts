@@ -16,4 +16,10 @@ export class UserRepositoryInMemory implements UserRepository {
 
 		return user || null
 	}
+
+	async findByEmailWithPermissions(email: string): Promise<User | null> {
+		const user = this.users.find(user => user.email === email)
+
+		return user || null
+	}
 }

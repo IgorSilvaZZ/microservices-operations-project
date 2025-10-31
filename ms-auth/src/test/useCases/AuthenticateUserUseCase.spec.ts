@@ -2,6 +2,8 @@ import { randomUUID } from 'node:crypto'
 import { describe, it, beforeEach, expect, afterEach, vi } from 'vitest'
 
 import { User } from '@domain/entities/User'
+import { Profile } from '@domain/entities/Profile'
+import { Permissions } from '@domain/entities/Permissions'
 
 import { UserRepositoryInMemory } from '@test/ports/UserRepositoryInMemory'
 import { BcryptPasswordHasherFakeAdapter } from '@test/adapters/BcryptPasswordHasherFakeAdapter'
@@ -21,6 +23,25 @@ describe('Authenticate User Use Case', () => {
 		bcryptPasswordHasherFakeAdapter = new BcryptPasswordHasherFakeAdapter()
 		authenticateProviderFakeAdapter = new AuthenticateProviderFakeAdapter()
 
+		userRepositoryInMemory.users.push(
+			new User({
+				id: randomUUID(),
+				name: 'Test User',
+				email: 'user@test.com',
+				password: 'hashed-password',
+				profileId: randomUUID(),
+				subId: randomUUID(),
+				profile: new Profile({
+					description: 'Profile Test',
+					permissions: [
+						new Permissions({ name: 'CREATE_ORDERS' }),
+						new Permissions({ name: 'GET_ORDERS' }),
+						new Permissions({ name: 'GET_OPERATIONS' })
+					]
+				})
+			})
+		)
+
 		authenticateUserUseCase = new AuthenticateUserUseCase(
 			userRepositoryInMemory,
 			bcryptPasswordHasherFakeAdapter,
@@ -33,17 +54,6 @@ describe('Authenticate User Use Case', () => {
 	})
 
 	it('should authenticate a user with valid credentials', async () => {
-		userRepositoryInMemory.users.push(
-			new User({
-				id: randomUUID(),
-				name: 'Test User',
-				email: 'user@test.com',
-				password: 'hashed-password',
-				profileId: randomUUID(),
-				subId: randomUUID()
-			})
-		)
-
 		bcryptPasswordHasherFakeAdapter.compare.mockResolvedValue(true)
 		authenticateProviderFakeAdapter.authenticate.mockResolvedValue({
 			accessToken: 'access-token',
@@ -70,17 +80,6 @@ describe('Authenticate User Use Case', () => {
 	})
 
 	it('should not be able authenticate a user with invalid email', async () => {
-		userRepositoryInMemory.users.push(
-			new User({
-				id: randomUUID(),
-				name: 'Test User',
-				email: 'user@test.com',
-				password: 'hashed-password',
-				profileId: randomUUID(),
-				subId: randomUUID()
-			})
-		)
-
 		await expect(() => {
 			return authenticateUserUseCase.authenticate({
 				email: 'userInvalidEmail@test.com',
@@ -90,17 +89,6 @@ describe('Authenticate User Use Case', () => {
 	})
 
 	it('should not be able authenticate a user with invalid password', async () => {
-		userRepositoryInMemory.users.push(
-			new User({
-				id: randomUUID(),
-				name: 'Test User',
-				email: 'user@test.com',
-				password: 'hashed-password',
-				profileId: randomUUID(),
-				subId: randomUUID()
-			})
-		)
-
 		bcryptPasswordHasherFakeAdapter.compare.mockResolvedValue(false)
 
 		await expect(() => {
@@ -112,17 +100,6 @@ describe('Authenticate User Use Case', () => {
 	})
 
 	it('should not be able authenticate a user with error authenticate provider', async () => {
-		userRepositoryInMemory.users.push(
-			new User({
-				id: randomUUID(),
-				name: 'Test User',
-				email: 'user@test.com',
-				password: 'invalid-password',
-				profileId: randomUUID(),
-				subId: randomUUID()
-			})
-		)
-
 		bcryptPasswordHasherFakeAdapter.compare.mockResolvedValue(true)
 		authenticateProviderFakeAdapter.authenticate.mockRejectedValue(
 			new Error('Error authenticate provider')
@@ -131,7 +108,7 @@ describe('Authenticate User Use Case', () => {
 		await expect(() => {
 			return authenticateUserUseCase.authenticate({
 				email: 'user@test.com',
-				password: 'invalid-password'
+				password: 'hashed-password'
 			})
 		}).rejects.toBeInstanceOf(Error)
 	})

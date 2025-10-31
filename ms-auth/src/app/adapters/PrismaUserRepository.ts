@@ -26,4 +26,22 @@ export class PrismaUserRepository implements UserRepository {
 
 		return user ? PrismaUserMapper.toDomain(user) : null
 	}
+
+	async findByEmailWithPermissions(email: string): Promise<User | null> {
+		// TODO continuar
+		const user = await prisma.users.findUnique({
+			where: { email: 'manager_dev@test.local' },
+			include: {
+				profile: {
+					include: {
+						profilePermissions: {
+							include: {
+								permission: true
+							}
+						}
+					}
+				}
+			}
+		})
+	}
 }

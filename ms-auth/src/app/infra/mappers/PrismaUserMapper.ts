@@ -13,6 +13,10 @@ export class PrismaUserMapper {
 			subId: raw.subId,
 			createdAt: raw.createdAt,
 			updatedAt: raw.updatedAt
+			// TODO continuar
+			// profile: {
+
+			// }
 		})
 	}
 }

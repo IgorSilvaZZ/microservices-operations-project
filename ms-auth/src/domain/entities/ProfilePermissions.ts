@@ -1,28 +1,26 @@
 import { randomUUID } from 'node:crypto'
 
-import { Permissions } from './Permissions'
-
-export interface ProfileProps {
+export interface ProfilePermissionsProps {
 	id?: string
-	description: string
-	permissions: Permissions[]
+	profileId: string
+	permissionId: string
 	createdAt?: Date
 	updatedAt?: Date
 	deletedAt?: Date
 }
 
-export class Profile {
+export class ProfilePermissions {
 	private _id: string
-	private _description: string
-	private _permissions: Permissions[]
+	private _profileId: string
+	private _permissionId: string
 	private _createdAt: Date
 	private _updatedAt: Date
 	private _deletedAt?: Date
 
-	constructor(props: ProfileProps) {
+	constructor(props: ProfilePermissionsProps) {
 		this._id = props.id ?? randomUUID()
-		this._description = props.description
-		this._permissions = props.permissions
+		this._profileId = props.profileId
+		this._permissionId = props.permissionId
 		this._createdAt = props.createdAt ?? new Date()
 		this._updatedAt = props.updatedAt ?? new Date()
 	}
@@ -31,12 +29,12 @@ export class Profile {
 		return this._id
 	}
 
-	get description(): string {
-		return this._description
+	get profileId(): string {
+		return this._profileId
 	}
 
-	get permissions(): Permissions[] {
-		return this._permissions
+	get permissionId(): string {
+		return this._permissionId
 	}
 
 	get createdAt(): Date {
@@ -51,20 +49,20 @@ export class Profile {
 		return this._deletedAt
 	}
 
-	set description(newDescription: string) {
-		this._description = newDescription
+	set profileId(value: string) {
+		this._profileId = value
 
 		this.syncUpdatedAt()
 	}
 
-	set permissions(newPermissions: Permissions[]) {
-		this._permissions = newPermissions
+	set permissionId(value: string) {
+		this._permissionId = value
 
 		this.syncUpdatedAt()
 	}
 
-	set deletedAt(date: Date | undefined) {
-		this._deletedAt = date
+	set deletedAt(value: Date | undefined) {
+		this._deletedAt = value
 
 		this.syncUpdatedAt()
 	}
