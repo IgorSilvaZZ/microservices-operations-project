@@ -14,7 +14,9 @@ export class PrismaUserRepository implements UserRepository {
 			}
 		})
 
-		return user ? PrismaUserMapper.toDomain(user) : null
+		return user
+			? PrismaUserMapper.toDomainWithoutProfilePermissions(user)
+			: null
 	}
 
 	async findByEmail(email: string): Promise<User | null> {
@@ -24,13 +26,14 @@ export class PrismaUserRepository implements UserRepository {
 			}
 		})
 
-		return user ? PrismaUserMapper.toDomain(user) : null
+		return user
+			? PrismaUserMapper.toDomainWithoutProfilePermissions(user)
+			: null
 	}
 
 	async findByEmailWithPermissions(email: string): Promise<User | null> {
-		// TODO continuar
 		const user = await prisma.users.findUnique({
-			where: { email: 'manager_dev@test.local' },
+			where: { email },
 			include: {
 				profile: {
 					include: {
@@ -43,5 +46,7 @@ export class PrismaUserRepository implements UserRepository {
 				}
 			}
 		})
+
+		return user ? PrismaUserMapper.toDomainWithProfilePermissions(user) : null
 	}
 }

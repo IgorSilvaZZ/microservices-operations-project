@@ -9,7 +9,7 @@ export interface UserProps {
 	password: string
 	profileId: string
 	subId: string
-	profile: Profile
+	profile: Profile | null // Pode ser nulo ja que nem sempre eu quero as informações do perfil
 	createdAt?: Date
 	updatedAt?: Date
 	deletedAt?: Date
@@ -22,7 +22,7 @@ export class User {
 	private _password: string
 	private _profileId: string
 	private _subId: string
-	private _profile: Profile
+	private _profile: Profile | null
 	private _createdAt: Date
 	private _updatedAt: Date
 	private _deletedAt?: Date
@@ -34,7 +34,7 @@ export class User {
 		this._password = props.password
 		this._profileId = props.profileId
 		this._subId = props.subId
-		this._profile = props.profile
+		this._profile = props.profile ?? null
 		this._createdAt = props.createdAt ?? new Date()
 		this._updatedAt = props.updatedAt ?? new Date()
 	}
@@ -63,8 +63,8 @@ export class User {
 		return this._subId
 	}
 
-	get profile(): Profile {
-		return this._profile
+	get profile(): Profile | null {
+		return this._profile || null
 	}
 
 	get createdAt(): Date {

@@ -10,6 +10,7 @@ export class UserDomainToHttpMapper {
 			subId: user.subId,
 			createdAt: user.createdAt,
 			updatedAt: user.updatedAt
+			// TODO: continuar tipagem para retornar informações do perfil e permissões
 		}
 	}
 }

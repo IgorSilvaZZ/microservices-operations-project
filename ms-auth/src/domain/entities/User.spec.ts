@@ -48,4 +48,20 @@ describe('User Entity', () => {
 
 		expect(user.profileId).toBe(newProfileId)
 	})
+
+	it('should be able to create user without profile', () => {
+		const userWithoutProfile: UserProps = {
+			name: 'User Test',
+			email: 'user@test.com',
+			password: '123456',
+			profileId: 'profile-id',
+			subId: 'sub-id',
+			profile: null
+		}
+
+		const user = new User(userWithoutProfile)
+
+		expect(user).toBeTruthy()
+		expect(user).toBeInstanceOf(User)
+	})
 })
