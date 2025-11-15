@@ -2,7 +2,7 @@ import { User } from '@domain/entities/User'
 
 import { UserRepository } from '@domain/ports/UserRepository'
 
-export class UserRepositoryInMemory implements UserRepository {
+export class UserRepositoryFakeAdapter implements UserRepository {
 	public users: User[] = []
 
 	async findById(id: string): Promise<User | null> {

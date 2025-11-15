@@ -5,21 +5,21 @@ import { User } from '@domain/entities/User'
 import { Profile } from '@domain/entities/Profile'
 import { Permissions } from '@domain/entities/Permissions'
 
-import { UserRepositoryInMemory } from '@test/ports/UserRepositoryInMemory'
-import { BcryptPasswordHasherFakeAdapter } from '@test/adapters/BcryptPasswordHasherFakeAdapter'
-import { AuthenticateProviderFakeAdapter } from '@test/adapters/AuthenticateProviderFakeAdapter'
+import { UserRepositoryFakeAdapter } from '@test/fakes/UserRepositoryFakeAdapter'
+import { BcryptPasswordHasherFakeAdapter } from '@test/fakes/BcryptPasswordHasherFakeAdapter'
+import { AuthenticateProviderFakeAdapter } from '@test/fakes/AuthenticateProviderFakeAdapter'
 
 import { AuthenticateUserUseCase } from '@app/useCases/AuthenticateUserUseCase'
 
 describe('Authenticate User Use Case', () => {
-	let userRepositoryInMemory: UserRepositoryInMemory
+	let userRepositoryInMemory: UserRepositoryFakeAdapter
 	let bcryptPasswordHasherFakeAdapter: BcryptPasswordHasherFakeAdapter
 	let authenticateProviderFakeAdapter: AuthenticateProviderFakeAdapter
 
 	let authenticateUserUseCase: AuthenticateUserUseCase
 
 	beforeEach(() => {
-		userRepositoryInMemory = new UserRepositoryInMemory()
+		userRepositoryInMemory = new UserRepositoryFakeAdapter()
 		bcryptPasswordHasherFakeAdapter = new BcryptPasswordHasherFakeAdapter()
 		authenticateProviderFakeAdapter = new AuthenticateProviderFakeAdapter()
 
