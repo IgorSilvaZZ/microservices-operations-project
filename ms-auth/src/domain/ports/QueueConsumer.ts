@@ -1,6 +1,6 @@
 export interface QueueConsumer {
 	listen(
-		queueName: string,
+		queueUrl: string,
 		handler: (message: unknown) => Promise<void>
 	): Promise<void>
 }

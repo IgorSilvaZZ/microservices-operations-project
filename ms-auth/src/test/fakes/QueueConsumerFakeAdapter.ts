@@ -6,10 +6,10 @@ export class QueueConsumerFakeAdapter implements QueueConsumer {
 	public listenMock = vi.fn()
 
 	async listen(
-		queueName: string,
+		queueUrl: string,
 		handler: (message: unknown) => Promise<void>
 	): Promise<void> {
-		this.listenMock(queueName, handler)
+		this.listenMock(queueUrl, handler)
 	}
 
 	// Metodo auxiliar para simular a mensagem chegando na fila
