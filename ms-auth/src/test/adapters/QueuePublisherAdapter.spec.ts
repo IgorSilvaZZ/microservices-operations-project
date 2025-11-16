@@ -42,7 +42,6 @@ describe('QueuePublisherAdapter', () => {
 		}
 
 		const messagePublish = {
-			success: true,
 			data: authenticateUserResponse
 		}
 
@@ -58,9 +57,7 @@ describe('QueuePublisherAdapter', () => {
 		expect(queuePublisherFakeAdapter.publishMock).toHaveBeenCalledTimes(1)
 		expect(queuePublisherFakeAdapter.publications).toHaveLength(1)
 		expect(queuePublisherFakeAdapter.publications[0]).toEqual({
-			queueUrl: 'auth-response-queue',
-			correlationId: expect.any(String),
-			success: true,
+			queueName: 'auth-response-queue',
 			data: messagePublish
 		})
 	})

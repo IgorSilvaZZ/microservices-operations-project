@@ -1,3 +1,3 @@
 export interface QueuePublisher {
-	publish(queueUrl: string, message: unknown): Promise<void>
+	publish(queueName: string, message: unknown): Promise<void>
 }

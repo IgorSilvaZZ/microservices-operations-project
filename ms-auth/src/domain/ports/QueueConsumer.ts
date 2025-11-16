@@ -1,6 +1,9 @@
+export interface QueueConsumerProps {
+	queueName: string
+	handler: (message: unknown) => Promise<any>
+	toReply?: boolean
+}
+
 export interface QueueConsumer {
-	listen(
-		queueUrl: string,
-		handler: (message: unknown) => Promise<void>
-	): Promise<void>
+	listen(props: QueueConsumerProps): Promise<any>
 }

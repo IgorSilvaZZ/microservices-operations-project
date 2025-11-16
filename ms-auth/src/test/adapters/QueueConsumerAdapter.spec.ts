@@ -13,6 +13,7 @@ import { BcryptPasswordHasherFakeAdapter } from '@test/fakes/BcryptPasswordHashe
 import { AuthenticateProviderFakeAdapter } from '@test/fakes/AuthenticateProviderFakeAdapter'
 
 import { AuthenticateUserUseCase } from '@app/useCases/AuthenticateUserUseCase'
+import { QueueConsumerProps } from '@domain/ports/QueueConsumer'
 
 describe('Queue consumer', () => {
 	let queueConsumerFakeAdapter: QueueConsumerFakeAdapter
@@ -54,7 +55,7 @@ describe('Queue consumer', () => {
 		vi.clearAllMocks()
 	})
 
-	it('should be able use case authenticate user when receiver auth queue', async () => {
+	it('should be able use case authenticate user when receiver auth queue to reply request in queue', async () => {
 		bcryptPasswordHasherFakeAdapter.compare.mockResolvedValue(true)
 		authenticateProviderFakeAdapter.authenticate.mockResolvedValue({
 			accessToken: 'access-token',
@@ -78,11 +79,17 @@ describe('Queue consumer', () => {
 			password: 'hashed-password'
 		}
 
-		await queueConsumerFakeAdapter.listen('auth-queue', async message => {
-			await authenticateUserUseCase.authenticate(
-				message as AuthenticateUserRequest
-			)
-		})
+		const listenData: QueueConsumerProps = {
+			queueName: 'auth-queue',
+			handler: async (message: unknown) => {
+				await authenticateUserUseCase.authenticate(
+					message as AuthenticateUserRequest
+				)
+			},
+			toReply: true
+		}
+
+		await queueConsumerFakeAdapter.listen(listenData)
 
 		await queueConsumerFakeAdapter.simulateMessage(messageAuthenticateQueue)
 
@@ -90,5 +97,6 @@ describe('Queue consumer', () => {
 		expect(spyAuthenticateUseCase).toHaveBeenCalledWith(
 			messageAuthenticateQueue
 		)
+		expect(queueConsumerFakeAdapter.sendToQueueMock).toHaveBeenCalledTimes(1)
 	})
 })

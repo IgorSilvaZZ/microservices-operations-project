@@ -1,15 +1,17 @@
 import { vi } from 'vitest'
 
-import { QueueConsumer } from '@ports/QueueConsumer'
+import { QueueConsumer, QueueConsumerProps } from '@ports/QueueConsumer'
 
 export class QueueConsumerFakeAdapter implements QueueConsumer {
 	public listenMock = vi.fn()
+	public sendToQueueMock = vi.fn()
 
-	async listen(
-		queueUrl: string,
-		handler: (message: unknown) => Promise<void>
-	): Promise<void> {
-		this.listenMock(queueUrl, handler)
+	async listen({
+		queueName,
+		handler,
+		toReply
+	}: QueueConsumerProps): Promise<any> {
+		this.listenMock(queueName, handler, toReply)
 	}
 
 	// Metodo auxiliar para simular a mensagem chegando na fila
@@ -23,7 +25,17 @@ export class QueueConsumerFakeAdapter implements QueueConsumer {
 		}
 
 		const handler = lastCall[1]
+		const toReply = lastCall[2]
 
-		await handler(message)
+		const result = await handler(message)
+
+		if (toReply && toReply === true) {
+			const correlationId = 'fake-correlation-id'
+			const replyTo = 'fake-reply-queue'
+
+			this.sendToQueueMock(replyTo, Buffer.from(JSON.stringify(result)), {
+				correlationId
+			})
+		}
 	}
 }
