@@ -25,6 +25,7 @@ export class RabbitMqQueueConsumer implements QueueConsumer {
 						const replyTo = message.properties.replyTo
 						const correlationId = message.properties.correlationId
 
+						// Envia a reposta para a fila de resposta com o mesmo correlationId
 						channel.sendToQueue(replyTo, Buffer.from(JSON.stringify(result)), {
 							correlationId
 						})

@@ -14,7 +14,7 @@ export async function authenticateConsumer(): Promise<void> {
 		queueName: 'authenticate_queue',
 		handler: (message: unknown) =>
 			authenticateUserUseCase.authenticate(message as AuthenticateUserRequest),
-		toReply: false
+		toReply: true
 	}
 
 	await rabbitMqQueueConsumer.listen(listenAuthenticateProps)
