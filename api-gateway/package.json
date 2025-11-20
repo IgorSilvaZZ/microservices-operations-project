@@ -1,22 +1,25 @@
 {
-  "name": "api-gateway",
-  "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT",
-  "scripts": {
-    "format": "biome format --write",
-    "dev": "tsx watch --env-file=.env src/server.ts"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^2.3.6",
-    "@types/node": "^24.10.1",
-    "tsx": "^4.20.6",
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "@fastify/cors": "^11.1.0",
-    "fastify": "^5.6.2",
-    "fastify-plugin": "^5.1.0",
-    "zod": "^4.1.12"
-  }
+	"name": "api-gateway",
+	"version": "1.0.0",
+	"main": "index.js",
+	"license": "MIT",
+	"type": "module",
+	"scripts": {
+		"format": "biome format --write",
+		"dev": "tsx watch --env-file=.env src/server.ts"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.3.6",
+		"@types/amqplib": "^0.10.8",
+		"@types/node": "^24.10.1",
+		"tsx": "^4.20.6",
+		"typescript": "^5.9.3"
+	},
+	"dependencies": {
+		"@fastify/cors": "^11.1.0",
+		"amqplib": "^0.10.9",
+		"fastify": "^5.6.2",
+		"fastify-plugin": "^5.1.0",
+		"zod": "^4.1.12"
+	}
 }

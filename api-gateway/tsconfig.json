@@ -12,8 +12,7 @@
 		"skipLibCheck": true,
 		"moduleResolution": "node16",
 
-		"paths": {
-			"@/*": ["./src/*"]
-		}
+		"allowImportingTsExtensions": true,
+		"noEmit": true,
 	}
 }

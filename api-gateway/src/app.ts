@@ -1,11 +1,11 @@
 import { fastifyCors } from "@fastify/cors";
 import fastify from "fastify";
 
-import { env } from "./env";
+import { env } from "./env.ts";
 
-import { apiKeyPlugin } from "./plugins/api-key.plugin";
+import { apiKeyPlugin } from "./plugins/api-key.plugin.ts";
 
-import { appRoutes } from "./router";
+import { appRoutes } from "./router.ts";
 
 const app = fastify();
 
