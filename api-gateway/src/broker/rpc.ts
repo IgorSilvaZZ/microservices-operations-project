@@ -1,27 +1,96 @@
 /** biome-ignore-all lint/suspicious/noAsyncPromiseExecutor: <explanation> */
+import { randomUUID } from "node:crypto";
+
 import type { Channel } from "amqplib";
 
 export async function rpcCall(
 	channel: Channel,
-	replyQueueName: string,
-	correlationId: string,
+	queueName: string,
+	message: any,
+	timeoutMs: number = 30000, // 30 seconds
 ) {
-	// Criando a fila de resposta
-	await channel.assertQueue(replyQueueName, { exclusive: true });
+	const correlationId = randomUUID();
 
-	return new Promise(async (resolve) => {
-		const consumer = await channel.consume(
-			replyQueueName,
-			(message) => {
-				if (message?.properties.correlationId === correlationId) {
-					resolve(JSON.parse(message.content.toString()));
+	return new Promise(async (resolve, reject) => {
+		let consumerTag: string | null = null;
+		let isResolved: boolean = false;
 
-					channel.cancel(consumer.consumerTag);
-				}
-			},
-			{
-				noAck: true,
-			},
-		);
+		const replyQueue = await channel.assertQueue("", {
+			exclusive: true,
+			autoDelete: true,
+		});
+
+		const replyQueueName = replyQueue.queue;
+
+		const timeout = setTimeout(() => {
+			if (isResolved) {
+				return;
+			}
+
+			isResolved = true;
+
+			if (consumerTag) {
+				channel.cancel(consumerTag).catch(console.error);
+			}
+
+			channel.deleteQueue(replyQueueName).catch(console.error);
+
+			reject(new Error("RPC call timed out!"));
+		}, timeoutMs);
+
+		try {
+			const consumerResponse = await channel.consume(
+				replyQueueName,
+				(msg) => {
+					if (!msg || isResolved) {
+						return;
+					}
+
+					if (msg.properties.correlationId === correlationId) {
+						isResolved = true;
+
+						clearTimeout(timeout);
+
+						try {
+							const content = msg.content.toString();
+							const parsedContent = JSON.parse(content);
+
+							console.log(`[RPC] Response received:`, parsedContent);
+
+							if (consumerTag) {
+								channel.cancel(consumerTag).catch(console.error);
+							}
+
+							channel.deleteQueue(replyQueueName).catch(console.error);
+
+							resolve(parsedContent);
+						} catch (error) {
+							reject(new Error(`Failed to RPC response: ${error}`));
+						}
+					}
+				},
+				{
+					noAck: true,
+				},
+			);
+
+			consumerTag = consumerResponse.consumerTag;
+
+			channel.sendToQueue(queueName, Buffer.from(JSON.stringify(message)), {
+				correlationId,
+				replyTo: replyQueueName,
+				persistent: true,
+			});
+		} catch (error) {
+			clearTimeout(timeout);
+
+			if (consumerTag) {
+				channel.cancel(consumerTag).catch(console.error);
+			}
+
+			channel.deleteQueue(replyQueueName).catch(console.error);
+
+			reject(error);
+		}
 	});
 }

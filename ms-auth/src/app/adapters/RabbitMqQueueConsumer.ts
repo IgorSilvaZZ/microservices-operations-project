@@ -12,7 +12,7 @@ export class RabbitMqQueueConsumer implements QueueConsumer {
 
 		const channel = await rabbitMqConnection.createChannel();
 
-		await channel.assertQueue(queueName);
+		await channel.assertQueue(queueName, { durable: true });
 
 		channel.consume(queueName, async (message) => {
 			if (!message) {
@@ -39,8 +39,6 @@ export class RabbitMqQueueConsumer implements QueueConsumer {
 				console.error(`Error handling message from ${queueName}:`, error);
 
 				channel.nack(message, false, false);
-			} finally {
-				await rabbitMqConnection.close();
 			}
 		});
 

@@ -1,7 +1,6 @@
-import { randomUUID } from "node:crypto";
-
 import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
+
 import { authenticateChannel } from "../../broker/channels/authenticate.ts";
 
 import { rpcCall } from "../../broker/rpc.ts";
@@ -14,26 +13,23 @@ export async function authenticateUser(req: FastifyRequest, rep: FastifyReply) {
 
 	const { email, password } = authenticateBodySchema.parse(req.body);
 
-	const queueReplyName = "authenticate_queue_reply";
+	try {
+		const requestPayload = { email, password };
 
-	const correlationId = randomUUID();
+		console.log(`[API] Sending to authenticate_queue:`, requestPayload);
 
-	authenticateChannel.sendToQueue(
-		"authenticate_queue",
-		Buffer.from(JSON.stringify({ email, password })),
-		{
-			correlationId,
-			replyTo: queueReplyName,
-		},
-	);
+		const reply = await rpcCall(
+			authenticateChannel,
+			"authenticate_queue",
+			requestPayload,
+		);
 
-	const reply = await rpcCall(
-		authenticateChannel,
-		queueReplyName,
-		correlationId,
-	);
+		console.log("Reply received:", reply);
 
-	console.log("Reply received:", reply);
+		return rep.status(200).send({ message: "User authenticated successfully" });
+	} catch (error) {
+		console.error("RPC call failed:", error);
 
-	return rep.status(200).send({ message: "User authenticated successfully" });
+		return rep.status(400).send({ message: "Authenticate failed" });
+	}
 }
