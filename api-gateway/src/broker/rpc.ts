@@ -3,6 +3,8 @@ import { randomUUID } from "node:crypto";
 
 import type { Channel } from "amqplib";
 
+import { RpcCallErrors } from "../errors/RpcCallErrors.ts";
+
 export async function rpcCall(
 	channel: Channel,
 	queueName: string,
@@ -53,7 +55,11 @@ export async function rpcCall(
 
 						try {
 							const content = msg.content.toString();
-							const parsedContent = JSON.parse(content);
+							const parsedContent = JSON.parse(content) as {
+								success: boolean;
+								message?: string;
+								data?: any;
+							};
 
 							console.log(`[RPC] Response received:`, parsedContent);
 
@@ -62,6 +68,12 @@ export async function rpcCall(
 							}
 
 							channel.deleteQueue(replyQueueName).catch(console.error);
+
+							if (!parsedContent.success) {
+								const messageContent = parsedContent.message as string;
+
+								reject(new RpcCallErrors(messageContent));
+							}
 
 							resolve(parsedContent);
 						} catch (error) {

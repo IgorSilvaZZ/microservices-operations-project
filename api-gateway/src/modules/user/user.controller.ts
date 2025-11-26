@@ -5,6 +5,8 @@ import { authenticateChannel } from "../../broker/channels/authenticate.ts";
 
 import { rpcCall } from "../../broker/rpc.ts";
 
+import { RpcCallErrors } from "../../errors/RpcCallErrors.ts";
+
 export async function authenticateUser(req: FastifyRequest, rep: FastifyReply) {
 	const authenticateBodySchema = z.object({
 		email: z.email(),
@@ -30,6 +32,10 @@ export async function authenticateUser(req: FastifyRequest, rep: FastifyReply) {
 	} catch (error) {
 		console.error("RPC call failed:", error);
 
-		return rep.status(400).send({ message: "Authenticate failed" });
+		if (error instanceof RpcCallErrors) {
+			return rep.status(error.statusCode).send({ message: error.message });
+		}
+
+		return rep.status(500).send({ message: "Internal Server Error" });
 	}
 }

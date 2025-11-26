@@ -21,12 +21,20 @@ export class RabbitMqQueueConsumer implements QueueConsumer {
 
 			const body = JSON.parse(message.content.toString());
 
-			try {
-				const result = await handler(body);
+			let correlationId: string | null = null;
+			let replyTo: string | null = null;
 
-				if (toReply !== undefined && toReply === true) {
-					const replyTo = message.properties.replyTo;
-					const correlationId = message.properties.correlationId;
+			try {
+				const response = await handler(body);
+
+				if (toReply) {
+					replyTo = message.properties.replyTo as string;
+					correlationId = message.properties.correlationId as string;
+
+					const result = {
+						data: response,
+						success: true,
+					};
 
 					// Envia a reposta para a fila de resposta com o mesmo correlationId
 					channel.sendToQueue(replyTo, Buffer.from(JSON.stringify(result)), {
@@ -35,10 +43,46 @@ export class RabbitMqQueueConsumer implements QueueConsumer {
 				}
 
 				channel.ack(message);
-			} catch (error) {
+			} catch (error: unknown) {
 				console.error(`Error handling message from ${queueName}:`, error);
 
-				channel.nack(message, false, false);
+				if (toReply && correlationId && replyTo) {
+					if (error instanceof Error) {
+						// Erros de useCase não de codigo ou execução
+						if (
+							error.message === "User not found!" ||
+							error.message === "Email/Password is incorrect!"
+						) {
+							channel.sendToQueue(
+								replyTo,
+								Buffer.from(
+									JSON.stringify({
+										success: false,
+										message: error.message,
+									}),
+								),
+								{
+									correlationId,
+								},
+							);
+						}
+					} else {
+						channel.sendToQueue(
+							replyTo,
+							Buffer.from(
+								JSON.stringify({
+									success: false,
+									message: "An unexpected mistake occurred!",
+								}),
+							),
+							{
+								correlationId,
+							},
+						);
+					}
+				}
+
+				channel.ack(message);
 			}
 		});
 
