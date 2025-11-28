@@ -2,7 +2,7 @@
 import { randomUUID } from "node:crypto";
 
 import type { Channel } from "amqplib";
-
+import type { ContentRpcMessage } from "../../../contracts/messages/ContentRpcMessage.ts";
 import { RpcCallErrors } from "../errors/RpcCallErrors.ts";
 
 export async function rpcCall(
@@ -10,7 +10,7 @@ export async function rpcCall(
 	queueName: string,
 	message: any,
 	timeoutMs: number = 30000, // 30 seconds
-) {
+): Promise<ContentRpcMessage> {
 	const correlationId = randomUUID();
 
 	return new Promise(async (resolve, reject) => {
@@ -55,11 +55,7 @@ export async function rpcCall(
 
 						try {
 							const content = msg.content.toString();
-							const parsedContent = JSON.parse(content) as {
-								success: boolean;
-								message?: string;
-								data?: any;
-							};
+							const parsedContent = JSON.parse(content) as ContentRpcMessage;
 
 							console.log(`[RPC] Response received:`, parsedContent);
 

@@ -18,17 +18,15 @@ export async function authenticateUser(req: FastifyRequest, rep: FastifyReply) {
 	try {
 		const requestPayload = { email, password };
 
-		console.log(`[API] Sending to authenticate_queue:`, requestPayload);
-
-		const reply = await rpcCall(
+		const { data } = await rpcCall(
 			authenticateChannel,
 			"authenticate_queue",
 			requestPayload,
 		);
 
-		console.log("Reply received:", reply);
-
-		return rep.status(200).send({ message: "User authenticated successfully" });
+		return rep.status(200).send({
+			...data,
+		});
 	} catch (error) {
 		console.error("RPC call failed:", error);
 

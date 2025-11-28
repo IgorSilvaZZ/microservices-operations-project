@@ -1,3 +1,4 @@
+import { AppError } from "@app/shared/AppErrors";
 import { RabbitMQClient } from "@microservice/shared/RabbitMQClient";
 
 import type { QueueConsumer, QueueConsumerProps } from "@ports/QueueConsumer";
@@ -25,12 +26,12 @@ export class RabbitMqQueueConsumer implements QueueConsumer {
 			let replyTo: string | null = null;
 
 			try {
+				replyTo = message.properties.replyTo as string;
+				correlationId = message.properties.correlationId as string;
+
 				const response = await handler(body);
 
 				if (toReply) {
-					replyTo = message.properties.replyTo as string;
-					correlationId = message.properties.correlationId as string;
-
 					const result = {
 						data: response,
 						success: true,
@@ -46,40 +47,29 @@ export class RabbitMqQueueConsumer implements QueueConsumer {
 			} catch (error: unknown) {
 				console.error(`Error handling message from ${queueName}:`, error);
 
+				console.log({
+					correlationId,
+					replyTo,
+				});
+
 				if (toReply && correlationId && replyTo) {
-					if (error instanceof Error) {
-						// Erros de useCase não de codigo ou execução
-						if (
-							error.message === "User not found!" ||
-							error.message === "Email/Password is incorrect!"
-						) {
-							channel.sendToQueue(
-								replyTo,
-								Buffer.from(
-									JSON.stringify({
-										success: false,
-										message: error.message,
-									}),
-								),
-								{
-									correlationId,
-								},
-							);
-						}
-					} else {
-						channel.sendToQueue(
-							replyTo,
-							Buffer.from(
-								JSON.stringify({
-									success: false,
-									message: "An unexpected mistake occurred!",
-								}),
-							),
-							{
-								correlationId,
-							},
-						);
-					}
+					const messageError =
+						error instanceof AppError
+							? error.message
+							: "An unexpected mistake occurred!";
+
+					channel.sendToQueue(
+						replyTo,
+						Buffer.from(
+							JSON.stringify({
+								success: false,
+								message: messageError,
+							}),
+						),
+						{
+							correlationId,
+						},
+					);
 				}
 
 				channel.ack(message);

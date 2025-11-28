@@ -1,4 +1,4 @@
-export class AppErrors {
+export class AppError {
 	public readonly message: string;
 
 	constructor(message: string) {

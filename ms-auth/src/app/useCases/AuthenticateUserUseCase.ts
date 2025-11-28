@@ -1,3 +1,4 @@
+import { AppError } from "@app/shared/AppErrors";
 import type { AuthenticateProvider } from "@ports/AuthenticateProvider";
 import type {
 	AuthenticateUser,
@@ -22,12 +23,12 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 
 		if (!user) {
 			// TODO: create custom errors and change this instance
-			throw new Error("User not found!");
+			throw new AppError("User not found!");
 		}
 
 		if (!(await this.passwordHasher.compare(password, user.password))) {
 			// TODO: create custom errors and change this instance
-			throw new Error("Email/Password is incorrect!");
+			throw new AppError("Email/Password is incorrect!");
 		}
 
 		try {
@@ -43,7 +44,7 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 		} catch (error) {
 			console.log(error);
 
-			throw new Error("Error authenticate provider!");
+			throw new AppError("Error authenticate provider!");
 		}
 	}
 }
