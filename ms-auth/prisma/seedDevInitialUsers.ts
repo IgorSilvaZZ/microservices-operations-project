@@ -1,142 +1,142 @@
-import { Prisma, PrismaClient } from '@prisma/client'
-import bcrypt from 'bcryptjs'
+import { type Prisma, PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 async function createProfiles() {
 	const profiles: Prisma.ProfileCreateInput[] = [
-		{ description: 'Worker' },
-		{ description: 'Manager' },
-		{ description: 'Finance' }
-	]
+		{ description: "Worker" },
+		{ description: "Manager" },
+		{ description: "Finance" },
+	];
 
 	await prisma.profile.createMany({
-		data: profiles
-	})
+		data: profiles,
+	});
 }
 
 async function createPermissions() {
 	const permissions: Prisma.PermissionsCreateInput[] = [
-		{ name: 'CREATE_ORDERS' },
-		{ name: 'CREATE_OPERATIONS' },
-		{ name: 'GET_ORDERS' },
-		{ name: 'GET_OPERATIONS' },
-		{ name: 'APPROVE_OPERATION' },
-		{ name: 'REJECT_OPERATION' }
-	]
+		{ name: "CREATE_ORDERS" },
+		{ name: "CREATE_OPERATIONS" },
+		{ name: "GET_ORDERS" },
+		{ name: "GET_OPERATIONS" },
+		{ name: "APPROVE_OPERATION" },
+		{ name: "REJECT_OPERATION" },
+	];
 
 	await prisma.permissions.createMany({
-		data: permissions
-	})
+		data: permissions,
+	});
 }
 
 async function createUsers() {
 	const users = [
 		{
-			name: 'Worker Dev',
-			username: 'worker_dev',
-			email: 'worker_dev@test.local',
-			password: 'Senha@2025',
-			subId: 'f438f4c8-3011-705a-394a-23695364a272',
-			group: 'Worker',
+			name: "Worker Dev",
+			username: "worker_dev",
+			email: "worker_dev@test.local",
+			password: "Senha@2025",
+			subId: "e4c81498-20d1-70c7-658d-c5c27d92b773",
+			group: "Worker",
 			permissions: [
-				'CREATE_ORDERS',
-				'CREATE_OPERATIONS',
-				'GET_ORDERS',
-				'GET_OPERATIONS'
-			]
+				"CREATE_ORDERS",
+				"CREATE_OPERATIONS",
+				"GET_ORDERS",
+				"GET_OPERATIONS",
+			],
 		},
 		{
-			name: 'Manager Dev',
-			username: 'manager_dev',
-			email: 'manager_dev@test.local',
-			password: 'Senha@2025',
-			subId: 'a4185488-a011-70e5-9a9e-dd6108f2b0ce',
-			group: 'Manager',
-			permissions: ['GET_OPERATIONS', 'APPROVE_OPERATION', 'REJECT_OPERATION']
+			name: "Manager Dev",
+			username: "manager_dev",
+			email: "manager_dev@test.local",
+			password: "Senha@2025",
+			subId: "248864e8-f001-7082-6b93-43e54111873a",
+			group: "Manager",
+			permissions: ["GET_OPERATIONS", "APPROVE_OPERATION", "REJECT_OPERATION"],
 		},
 		{
-			name: 'Finance Dev',
-			username: 'finance_dev',
-			email: 'finance_dev@test.local',
-			password: 'Senha@2025',
-			subId: '9488b478-2051-705b-2506-35b708047d66',
-			group: 'Finance',
-			permissions: ['GET_OPERATIONS', 'APPROVE_OPERATION', 'REJECT_OPERATION']
-		}
-	]
+			name: "Finance Dev",
+			username: "finance_dev",
+			email: "finance_dev@test.local",
+			password: "Senha@2025",
+			subId: "74c8e418-e091-7020-afb1-96461dc0c01b",
+			group: "Finance",
+			permissions: ["GET_OPERATIONS", "APPROVE_OPERATION", "REJECT_OPERATION"],
+		},
+	];
 
 	for (const user of users) {
 		const profile = await prisma.profile.findFirst({
-			where: { description: user.group }
-		})
+			where: { description: user.group },
+		});
 
 		if (!profile) {
-			throw new Error(`Profile not found: ${user.group}`)
+			throw new Error(`Profile not found: ${user.group}`);
 		}
 
-		const hashedPassword = await bcrypt.hash(user.password, 10)
+		const hashedPassword = await bcrypt.hash(user.password, 10);
 
 		const userData: Prisma.UsersUncheckedCreateInput = {
 			name: user.name,
 			email: user.email,
 			password: hashedPassword,
 			profileId: profile.id,
-			subId: user.subId
-		}
+			subId: user.subId,
+		};
 
 		try {
 			await prisma.users.create({
-				data: userData
-			})
+				data: userData,
+			});
 
 			for (const permissionName of user.permissions) {
 				const permission = await prisma.permissions.findFirst({
-					where: { name: permissionName }
-				})
+					where: { name: permissionName },
+				});
 
 				if (!permission) {
-					throw new Error(`Permission not found: ${permissionName}`)
+					throw new Error(`Permission not found: ${permissionName}`);
 				}
 
 				const permissionProfileData: Prisma.ProfilePermissionsUncheckedCreateInput =
 					{
 						permissionId: permission.id,
-						profileId: profile.id
-					}
+						profileId: profile.id,
+					};
 
 				await prisma.profilePermissions.create({
-					data: permissionProfileData
-				})
+					data: permissionProfileData,
+				});
 			}
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 
-			console.log('error creating user:', user.name)
+			console.log("error creating user:", user.name);
 
-			throw error
+			throw error;
 		}
 
-		console.log('User Created ✅', user.name)
+		console.log("User Created ✅", user.name);
 	}
 }
 
 async function main() {
-	await createProfiles()
+	await createProfiles();
 
-	await createPermissions()
+	await createPermissions();
 
-	await createUsers()
+	await createUsers();
 }
 
 main()
 	.then(async () => {
-		await prisma.$disconnect()
+		await prisma.$disconnect();
 	})
-	.catch(async e => {
-		console.error(e)
+	.catch(async (e) => {
+		console.error(e);
 
-		await prisma.$disconnect()
+		await prisma.$disconnect();
 
-		process.exit(1)
-	})
+		process.exit(1);
+	});
