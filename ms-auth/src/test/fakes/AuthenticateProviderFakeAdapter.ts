@@ -1,9 +1,8 @@
-import { vi } from 'vitest'
-
-import {
+import type {
 	AuthenticateProvider,
-	AuthenticateProviderResponse
+	AuthenticateProviderResponse,
 } from '@ports/AuthenticateProvider'
+import { vi } from 'vitest'
 
 export class AuthenticateProviderFakeAdapter implements AuthenticateProvider {
 	authenticate =

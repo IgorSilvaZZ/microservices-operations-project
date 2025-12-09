@@ -6,14 +6,12 @@
 	"scripts": {
 		"dev:http": "tsx watch src/app/infra/http/server.ts",
 		"dev:microservice": "tsx watch src/app/infra/microservice/app.ts",
-		"build": "tsc",
+		"build": "tsc --project tsconfig.json",
 		"test": "vitest run --silent",
 		"test:watch": "vitest watch",
-		"lint:check": "eslint src --ext .ts,.js",
-		"lint:fix": "eslint src --ext .ts,.js --fix",
-		"format": "prettier --write src/**/*.{ts,js,json}",
-		"format:check": "prettier --check src/**/*.{ts,js,json}",
-		"type-check": "tsc --noEmit"
+		"lint:lint": "biomet lint --write",
+		"lint:format": "biomet format --write",
+		"lint:check": "biome check --write"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.6",

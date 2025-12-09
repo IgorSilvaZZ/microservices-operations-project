@@ -1,6 +1,5 @@
+import type { QueuePublisher } from '@ports/QueuePublisher'
 import { vi } from 'vitest'
-
-import { QueuePublisher } from '@ports/QueuePublisher'
 
 interface Publications {
 	queueName: string
@@ -17,7 +16,7 @@ export class QueuePublisherFakeAdapter implements QueuePublisher {
 
 		this.publications.push({
 			queueName,
-			data: message
+			data: message,
 		})
 	}
 }

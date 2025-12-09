@@ -1,6 +1,6 @@
-import { PrismaUserRepository } from '@adapters/PrismaUserRepository'
-import { BcryptPasswordHasher } from '@adapters/BcryptPasswordHasher'
 import { AuthenticateProviderAdapter } from '@adapters/AuthenticateProvider'
+import { BcryptPasswordHasher } from '@adapters/BcryptPasswordHasher'
+import { PrismaUserRepository } from '@adapters/PrismaUserRepository'
 
 import { AuthenticateUserUseCase } from '@useCases/AuthenticateUserUseCase'
 
@@ -12,7 +12,7 @@ export const makeAuthenticateUserUseCase = () => {
 	const authenticateUserUseCase = new AuthenticateUserUseCase(
 		prismaUserRepository,
 		bcryptPasswordHasher,
-		authenticateProviderAdapter
+		authenticateProviderAdapter,
 	)
 
 	return authenticateUserUseCase

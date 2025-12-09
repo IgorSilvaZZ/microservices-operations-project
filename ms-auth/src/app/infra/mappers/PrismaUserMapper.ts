@@ -1,10 +1,11 @@
-import { Users as PrismaUsers, Prisma } from '@prisma/client'
-
-import { User } from '@domain/entities/User'
-import { Profile } from '@domain/entities/Profile'
+/** biome-ignore-all lint/complexity/noStaticOnlyClass: <explanation> */
 import { Permissions } from '@domain/entities/Permissions'
+import { Profile } from '@domain/entities/Profile'
+import { User } from '@domain/entities/User'
 
-import { UserWithProfilePermissions } from '../prisma/types/UserWithProfilePermissions'
+import type { Users as PrismaUsers } from '@prisma/client'
+
+import type { UserWithProfilePermissions } from '../prisma/types/UserWithProfilePermissions'
 
 export class PrismaUserMapper {
 	static toDomainWithoutProfilePermissions(raw: PrismaUsers) {
@@ -17,7 +18,7 @@ export class PrismaUserMapper {
 			subId: raw.subId,
 			createdAt: raw.createdAt,
 			updatedAt: raw.updatedAt,
-			profile: null
+			profile: null,
 		})
 	}
 
@@ -30,9 +31,9 @@ export class PrismaUserMapper {
 					id: permissionRaw.id,
 					name: permissionRaw.name,
 					createdAt: permissionRaw.createdAt,
-					updatedAt: permissionRaw.updatedAt
+					updatedAt: permissionRaw.updatedAt,
 				})
-			}
+			},
 		)
 
 		return new User({
@@ -49,8 +50,8 @@ export class PrismaUserMapper {
 				description: profileRaw.description,
 				permissions: permissions,
 				createdAt: profileRaw.createdAt,
-				updatedAt: profileRaw.updatedAt
-			})
+				updatedAt: profileRaw.updatedAt,
+			}),
 		})
 	}
 }

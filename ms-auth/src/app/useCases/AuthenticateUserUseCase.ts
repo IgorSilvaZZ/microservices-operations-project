@@ -1,3 +1,4 @@
+import { UserDomainToNormalizedMapper } from "@app/infra/mappers/UserDomainToNormalizedMapper";
 import { AppError } from "@app/shared/AppErrors";
 import type { AuthenticateProvider } from "@ports/AuthenticateProvider";
 import type {
@@ -38,7 +39,7 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 			);
 
 			return {
-				user,
+				user: UserDomainToNormalizedMapper.toNormalized(user),
 				token: accessToken,
 			};
 		} catch (error) {

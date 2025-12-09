@@ -9,7 +9,7 @@ const envSchema = z.object({
 	COGNITO_CLIENT_SECRET: z.string(),
 	RABBITMQ_URL: z.string(),
 	RABBITMQ_USER: z.string(),
-	RABBITMQ_PASSWORD: z.string()
+	RABBITMQ_PASSWORD: z.string(),
 })
 
 const _env = envSchema.safeParse(process.env)

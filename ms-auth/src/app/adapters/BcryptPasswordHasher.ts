@@ -1,6 +1,5 @@
+import type { PasswordHasher } from '@ports/PasswordHasher'
 import bcrypt from 'bcryptjs'
-
-import { PasswordHasher } from '@ports/PasswordHasher'
 
 export class BcryptPasswordHasher implements PasswordHasher {
 	private readonly rounds = 10

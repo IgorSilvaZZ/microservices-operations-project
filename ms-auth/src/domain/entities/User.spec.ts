@@ -1,9 +1,8 @@
-import { describe, expect, it } from 'vitest'
 import { randomUUID } from 'node:crypto'
-
-import { User, UserProps } from './User'
-import { Profile } from './Profile'
+import { describe, expect, it } from 'vitest'
 import { Permissions } from './Permissions'
+import { Profile } from './Profile'
+import { User, type UserProps } from './User'
 
 describe('User Entity', () => {
 	const userProps: UserProps = {
@@ -17,9 +16,9 @@ describe('User Entity', () => {
 			permissions: [
 				new Permissions({ name: 'CREATE_ORDERS' }),
 				new Permissions({ name: 'GET_ORDERS' }),
-				new Permissions({ name: 'GET_OPERATIONS' })
-			]
-		})
+				new Permissions({ name: 'GET_OPERATIONS' }),
+			],
+		}),
 	}
 
 	it('should be able to create a user', () => {
@@ -56,7 +55,7 @@ describe('User Entity', () => {
 			password: '123456',
 			profileId: 'profile-id',
 			subId: 'sub-id',
-			profile: null
+			profile: null,
 		}
 
 		const user = new User(userWithoutProfile)

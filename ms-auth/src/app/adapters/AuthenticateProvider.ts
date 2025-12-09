@@ -1,15 +1,13 @@
 import { createHmac } from 'node:crypto'
-
+import { env } from '@app/env'
 import {
 	CognitoIdentityProviderClient,
-	InitiateAuthCommand
+	InitiateAuthCommand,
 } from '@aws-sdk/client-cognito-identity-provider'
 
-import { env } from '@app/env'
-
-import {
+import type {
 	AuthenticateProvider,
-	AuthenticateProviderResponse
+	AuthenticateProviderResponse,
 } from '@domain/ports/AuthenticateProvider'
 
 export class AuthenticateProviderAdapter implements AuthenticateProvider {
@@ -27,7 +25,7 @@ export class AuthenticateProviderAdapter implements AuthenticateProvider {
 
 	async authenticate(
 		email: string,
-		password: string
+		password: string,
 	): Promise<AuthenticateProviderResponse> {
 		const secretHash = this.generateSecretHash(email)
 
@@ -37,8 +35,8 @@ export class AuthenticateProviderAdapter implements AuthenticateProvider {
 			AuthParameters: {
 				USERNAME: email,
 				PASSWORD: password,
-				SECRET_HASH: secretHash
-			}
+				SECRET_HASH: secretHash,
+			},
 		})
 
 		try {
@@ -51,7 +49,7 @@ export class AuthenticateProviderAdapter implements AuthenticateProvider {
 			return {
 				accessToken,
 				idToken,
-				refreshToken
+				refreshToken,
 			}
 		} catch (error: any) {
 			if (error.name === 'NotAuthorizedException') {

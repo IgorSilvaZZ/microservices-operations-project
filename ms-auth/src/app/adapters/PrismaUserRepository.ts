@@ -1,17 +1,14 @@
-import { User } from '@domain/entities/User'
-
-import { UserRepository } from '@domain/ports/UserRepository'
-
-import { PrismaUserMapper } from '@mappers/PrismaUserMapper'
-
 import { prisma } from '@app/infra/prisma'
+import type { User } from '@domain/entities/User'
+import type { UserRepository } from '@domain/ports/UserRepository'
+import { PrismaUserMapper } from '@mappers/PrismaUserMapper'
 
 export class PrismaUserRepository implements UserRepository {
 	async findById(id: string): Promise<User | null> {
 		const user = await prisma.users.findUnique({
 			where: {
-				id
-			}
+				id,
+			},
 		})
 
 		return user
@@ -22,8 +19,8 @@ export class PrismaUserRepository implements UserRepository {
 	async findByEmail(email: string): Promise<User | null> {
 		const user = await prisma.users.findUnique({
 			where: {
-				email
-			}
+				email,
+			},
 		})
 
 		return user
@@ -39,12 +36,12 @@ export class PrismaUserRepository implements UserRepository {
 					include: {
 						profilePermissions: {
 							include: {
-								permission: true
-							}
-						}
-					}
-				}
-			}
+								permission: true,
+							},
+						},
+					},
+				},
+			},
 		})
 
 		return user ? PrismaUserMapper.toDomainWithProfilePermissions(user) : null

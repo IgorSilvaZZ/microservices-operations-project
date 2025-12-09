@@ -1,64 +1,55 @@
-import { randomUUID } from 'node:crypto'
-import { vi, afterEach, describe, it, beforeEach, expect } from 'vitest'
+import { randomUUID } from "node:crypto";
 
-import { AuthenticateUserResponse } from '@ports/AuthenticateUser'
+import type { AuthenticateUserResponse } from "@ports/AuthenticateUser";
+import { QueuePublisherFakeAdapter } from "@test/fakes/QueuePublisherFakeAdapter";
 
-import { User } from '@domain/entities/User'
-import { Profile } from '@domain/entities/Profile'
-import { Permissions } from '@domain/entities/Permissions'
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { QueuePublisherFakeAdapter } from '@test/fakes/QueuePublisherFakeAdapter'
-
-describe('QueuePublisherAdapter', () => {
-	let queuePublisherFakeAdapter: QueuePublisherFakeAdapter
+describe("QueuePublisherAdapter", () => {
+	let queuePublisherFakeAdapter: QueuePublisherFakeAdapter;
 
 	beforeEach(() => {
-		queuePublisherFakeAdapter = new QueuePublisherFakeAdapter()
-	})
+		queuePublisherFakeAdapter = new QueuePublisherFakeAdapter();
+	});
 
 	afterEach(() => {
-		vi.clearAllMocks()
-	})
+		vi.clearAllMocks();
+	});
 
-	it('should be able publisher message in queue authenticate response', async () => {
+	it("should be able publisher message in queue authenticate response", async () => {
 		const authenticateUserResponse: AuthenticateUserResponse = {
-			user: new User({
+			user: {
 				id: randomUUID(),
-				name: 'Test User',
-				email: 'user@test.com',
-				password: 'hashed-password',
+				name: "Test User",
+				email: "user@test.com",
 				profileId: randomUUID(),
+				permissions: ["CREATE_ORDERS", "GET_ORDERS", "GET_OPERATIONS"],
+				profile: "Profile Test",
 				subId: randomUUID(),
-				profile: new Profile({
-					description: 'Profile Test',
-					permissions: [
-						new Permissions({ name: 'CREATE_ORDERS' }),
-						new Permissions({ name: 'GET_ORDERS' }),
-						new Permissions({ name: 'GET_OPERATIONS' })
-					]
-				})
-			}),
-			token: 'access-token'
-		}
+				updatedAt: new Date(),
+				createdAt: new Date(),
+			},
+			token: "access-token",
+		};
 
 		const messagePublish = {
-			data: authenticateUserResponse
-		}
+			data: authenticateUserResponse,
+		};
 
 		await queuePublisherFakeAdapter.publish(
-			'auth-response-queue',
-			messagePublish
-		)
+			"auth-response-queue",
+			messagePublish,
+		);
 
 		expect(queuePublisherFakeAdapter.publishMock).toHaveBeenCalledWith(
-			'auth-response-queue',
-			messagePublish
-		)
-		expect(queuePublisherFakeAdapter.publishMock).toHaveBeenCalledTimes(1)
-		expect(queuePublisherFakeAdapter.publications).toHaveLength(1)
+			"auth-response-queue",
+			messagePublish,
+		);
+		expect(queuePublisherFakeAdapter.publishMock).toHaveBeenCalledTimes(1);
+		expect(queuePublisherFakeAdapter.publications).toHaveLength(1);
 		expect(queuePublisherFakeAdapter.publications[0]).toEqual({
-			queueName: 'auth-response-queue',
-			data: messagePublish
-		})
-	})
-})
+			queueName: "auth-response-queue",
+			data: messagePublish,
+		});
+	});
+});

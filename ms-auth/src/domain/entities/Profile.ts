@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 
-import { Permissions } from './Permissions'
+import type { Permissions } from './Permissions'
 
 export interface ProfileProps {
 	id?: string

@@ -7,6 +7,6 @@ export interface AuthenticateProviderResponse {
 export interface AuthenticateProvider {
 	authenticate(
 		email: string,
-		password: string
+		password: string,
 	): Promise<AuthenticateProviderResponse>
 }
