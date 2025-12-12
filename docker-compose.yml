@@ -1,15 +1,15 @@
 services:
-  db-auth:
+  operations-db:
     image: bitnami/postgresql:latest
-    container_name: db-auth
+    container_name: operations-db
     ports:
       - "5483:5432"
     environment:
-      - POSTGRES_USER=ms-auth-dev
-      - POSTGRES_PASSWORD=ms-auth-dev
-      - POSTGRES_DB=authDev
+      - POSTGRES_USER=operations-dev
+      - POSTGRES_PASSWORD=operations-dev
+      - POSTGRES_DB=postgres
     volumes:
-      - db_data_auth:/bitnami/postgresql
+      - operations_db_data:/bitnami/postgresql
 
   broker:
     image: rabbitmq:3-management
@@ -24,5 +24,5 @@ services:
       - "rabbitmq_data:/var/lib/rambbitmq"
 
 volumes:
-  db_data_auth:
+  operations_db_data:
   rabbitmq_data:
