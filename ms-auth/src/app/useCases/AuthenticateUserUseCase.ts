@@ -6,6 +6,7 @@ import type {
 	AuthenticateUserRequest,
 	AuthenticateUserResponse,
 } from "@ports/AuthenticateUser";
+import type { JwtProvider } from "@ports/JwtProvider";
 import type { PasswordHasher } from "@ports/PasswordHasher";
 import type { UserRepository } from "@ports/UserRepository";
 
@@ -14,6 +15,7 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 		private userRepository: UserRepository,
 		private passwordHasher: PasswordHasher,
 		private authenticationProvider: AuthenticateProvider,
+		private jwtProvider: JwtProvider,
 	) {}
 
 	async authenticate({
@@ -37,6 +39,11 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 				email,
 				password,
 			);
+
+			this.jwtProvider.generateToken({
+				sub: user.id,
+				cognitoAccessToken: accessToken,
+			});
 
 			return {
 				user: UserDomainToNormalizedMapper.toNormalized(user),

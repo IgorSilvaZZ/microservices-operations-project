@@ -1,5 +1,9 @@
+import type { OrderStatusEnum } from "@domain/entities/Order";
+
 export interface OrderCreateRequest {
-    number: string
-    description: string
-    userId: string
+	id?: string;
+	number: string;
+	description: string;
+	userId: string;
+	status?: OrderStatusEnum;
 }

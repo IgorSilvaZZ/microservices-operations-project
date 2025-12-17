@@ -1,8 +1,8 @@
-import { Order } from "@domain/entities/Order";
+import type { Order } from "@domain/entities/Order";
 
-import { OrderCreateRequest } from "./OrderCreate";
+import type { OrderCreateRequest } from "./OrderCreate";
 
 export interface OrderRepository {
-    create(data: OrderCreateRequest): Promise<Order>
-    findByNumber(number: string): Promise<Order | null>
+	create(data: OrderCreateRequest): Promise<Order>;
+	findByNumber(number: string): Promise<Order | null>;
 }

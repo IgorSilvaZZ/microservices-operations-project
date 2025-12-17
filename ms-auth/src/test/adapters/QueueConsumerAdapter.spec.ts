@@ -11,6 +11,7 @@ import type { QueueConsumerProps } from "@ports/QueueConsumer";
 
 import { AuthenticateProviderFakeAdapter } from "@test/fakes/AuthenticateProviderFakeAdapter";
 import { BcryptPasswordHasherFakeAdapter } from "@test/fakes/BcryptPasswordHasherFakeAdapter";
+import { JwtProviderFakeAdapter } from "@test/fakes/JwtProviderFakeAdapter";
 import { QueueConsumerFakeAdapter } from "@test/fakes/QueueConsumerFakeAdapter";
 import { UserRepositoryFakeAdapter } from "@test/fakes/UserRepositoryFakeAdapter";
 
@@ -22,6 +23,7 @@ describe("Queue consumer", () => {
 	let userRepositoryInMemory: UserRepositoryFakeAdapter;
 	let bcryptPasswordHasherFakeAdapter: BcryptPasswordHasherFakeAdapter;
 	let authenticateProviderFakeAdapter: AuthenticateProviderFakeAdapter;
+	let jwtProviderFakeAdapter: JwtProviderFakeAdapter;
 
 	let authenticateUserUseCase: AuthenticateUserUseCase;
 
@@ -31,6 +33,7 @@ describe("Queue consumer", () => {
 		userRepositoryInMemory = new UserRepositoryFakeAdapter();
 		bcryptPasswordHasherFakeAdapter = new BcryptPasswordHasherFakeAdapter();
 		authenticateProviderFakeAdapter = new AuthenticateProviderFakeAdapter();
+		jwtProviderFakeAdapter = new JwtProviderFakeAdapter();
 
 		userRepositoryInMemory.users.push(
 			new User({
@@ -68,6 +71,7 @@ describe("Queue consumer", () => {
 			userRepositoryInMemory,
 			bcryptPasswordHasherFakeAdapter,
 			authenticateProviderFakeAdapter,
+			jwtProviderFakeAdapter,
 		);
 
 		const spyAuthenticateUseCase = vi.spyOn(
