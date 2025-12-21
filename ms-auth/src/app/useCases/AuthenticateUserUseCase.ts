@@ -25,12 +25,10 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 		const user = await this.userRepository.findByEmailWithPermissions(email);
 
 		if (!user) {
-			// TODO: create custom errors and change this instance
 			throw new AppError("User not found!");
 		}
 
 		if (!(await this.passwordHasher.compare(password, user.password))) {
-			// TODO: create custom errors and change this instance
 			throw new AppError("Email/Password is incorrect!");
 		}
 
@@ -40,14 +38,22 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 				password,
 			);
 
-			this.jwtProvider.generateToken({
+			const permissions =
+				user.profile?.permissions.map((item) => item.name) || [];
+
+			const token = await this.jwtProvider.generateToken({
 				sub: user.id,
 				cognitoAccessToken: accessToken,
+				data: {
+					name: user.name,
+					email: user.email,
+					permissions,
+				},
 			});
 
 			return {
 				user: UserDomainToNormalizedMapper.toNormalized(user),
-				token: accessToken,
+				token,
 			};
 		} catch (error) {
 			console.log(error);
