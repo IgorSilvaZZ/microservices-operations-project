@@ -1,0 +1,11 @@
+{
+	"name": "microservices-operations-project",
+	"version": "1.0.0",
+	"main": "index.js",
+	"repository": "https://github.com/IgorSilvaZZ/operation-project.git",
+	"author": "IgorSilvaZZ <igor06silva12@gmail.com>",
+	"license": "MIT",
+	"workspaces": [
+		"packages/*"
+	]
+}

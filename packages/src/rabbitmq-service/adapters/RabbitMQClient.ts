@@ -1,16 +1,39 @@
-/** biome-ignore-all lint/suspicious/noExplicitAny: <explanation> */
-import { AppError } from "@app/shared/AppErrors";
-import { RabbitMQClient } from "@microservice/shared/RabbitMQClient";
+import { type ChannelModel, connect } from "amqplib";
+import type {
+	QueueConsumerProps,
+	RabbitMQClientPort,
+} from "../ports/RabbitMQClientPort";
 
-import type { QueueConsumer, QueueConsumerProps } from "@ports/QueueConsumer";
+import { AppError } from "../shared/AppErrors";
+import type { RabbitMQConfig } from "../shared/interfaces/RabbitMQConfig";
 
-export class RabbitMqQueueConsumer implements QueueConsumer {
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
+export class RabbitMQClient implements RabbitMQClientPort {
+	private CONNECTION: ChannelModel | null = null;
+	private config: RabbitMQConfig;
+
+	constructor(config: RabbitMQConfig) {
+		this.config = config;
+	}
+
+	async getConnection(): Promise<ChannelModel> {
+		if (!this.CONNECTION) {
+			this.CONNECTION = await connect({
+				hostname: this.config.hostname,
+				username: this.config.username,
+				password: this.config.password,
+			});
+		}
+
+		return this.CONNECTION;
+	}
+
 	async listen({
 		queueName,
 		handler,
 		toReply,
 	}: QueueConsumerProps): Promise<any> {
-		const rabbitMqConnection = await RabbitMQClient.getConnection();
+		const rabbitMqConnection = await this.getConnection();
 
 		const channel = await rabbitMqConnection.createChannel();
 
@@ -73,5 +96,9 @@ export class RabbitMqQueueConsumer implements QueueConsumer {
 		});
 
 		console.info(`Listening to queue: ${queueName} ....`);
+	}
+
+	async publish(queueName: string, message: unknown): Promise<void> {
+		throw new Error("Method not implemented.");
 	}
 }
