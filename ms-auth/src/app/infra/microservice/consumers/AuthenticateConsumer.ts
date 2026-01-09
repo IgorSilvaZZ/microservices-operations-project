@@ -1,11 +1,9 @@
-import { RabbitMqQueueConsumer } from "@adapters/RabbitMqQueueConsumer";
 import { makeAuthenticateUserUseCase } from "@factories/MakeAuthenticateUserUseCase";
 import type { AuthenticateUserRequest } from "@ports/AuthenticateUser";
-import type { QueueConsumerProps } from "@ports/QueueConsumer";
 import { AUTHENTICATE_QUEUE } from "../shared/Queues";
 
 export async function authenticateConsumer(): Promise<void> {
-	const rabbitMqQueueConsumer = new RabbitMqQueueConsumer();
+	const rabbitMqQueueConsumer = 
 
 	const authenticateUserUseCase = makeAuthenticateUserUseCase();
 
@@ -15,6 +13,4 @@ export async function authenticateConsumer(): Promise<void> {
 			authenticateUserUseCase.authenticate(message as AuthenticateUserRequest),
 		toReply: true,
 	};
-
-	await rabbitMqQueueConsumer.listen(listenAuthenticateProps);
 }

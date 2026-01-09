@@ -1,8 +1,7 @@
 import { type ChannelModel, connect } from "amqplib";
-import type {
-	QueueConsumerProps,
-	RabbitMQClientPort,
-} from "../ports/RabbitMQClientPort";
+
+import type { QueueConsumerProps } from "../ports/QueueConsumerProps";
+import type { RabbitMQClientPort } from "../ports/RabbitMQClientPort";
 
 import { AppError } from "../shared/AppErrors";
 import type { RabbitMQConfig } from "../shared/interfaces/RabbitMQConfig";
@@ -99,6 +98,15 @@ export class RabbitMQClient implements RabbitMQClientPort {
 	}
 
 	async publish(queueName: string, message: unknown): Promise<void> {
-		throw new Error("Method not implemented.");
+		const rabbitMqConnection = await this.getConnection();
+
+		const channel = await rabbitMqConnection.createChannel();
+
+		await channel.assertQueue(queueName);
+
+		channel.sendToQueue(queueName, Buffer.from(JSON.stringify(message)));
+
+		await channel.close();
+		await rabbitMqConnection.close();
 	}
 }

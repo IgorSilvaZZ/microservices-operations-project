@@ -6,6 +6,7 @@
 	"author": "IgorSilvaZZ <igor06silva12@gmail.com>",
 	"license": "MIT",
 	"workspaces": [
+		"ms-*",
 		"packages/*"
 	]
 }

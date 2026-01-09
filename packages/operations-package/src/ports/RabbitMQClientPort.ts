@@ -1,8 +1,4 @@
-export interface QueueConsumerProps {
-	queueName: string;
-	handler: (message: unknown) => Promise<any>;
-	toReply?: boolean;
-}
+import type { QueueConsumerProps } from "./QueueConsumerProps";
 
 export interface RabbitMQClientPort {
 	listen(props: QueueConsumerProps): Promise<any>;
