@@ -3,6 +3,7 @@
 		"module": "es2022",
 		"target": "esnext",
 		"lib": ["ES2022"],
+		"declaration": true,
 		"allowJs": true,
 		"outDir": "./dist",
 		"rootDir": "./src",
@@ -13,8 +14,7 @@
 		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
-		"isolatedModules": true,
-		"noEmit": true,
+		"isolatedModules": false,
 	},
 	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist"]

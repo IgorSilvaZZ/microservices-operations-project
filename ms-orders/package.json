@@ -7,23 +7,22 @@
 		"build": "tsc --project tsconfig.json",
 		"test": "vitest run --silent",
 		"test:watch": "vitest watch",
-		"lint:lint": "biomet lint --write",
-		"lint:format": "biomet format --write",
+		"lint:lint": "biome lint --write",
+		"lint:format": "biome format --write",
 		"lint:check": "biome check --write"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.8",
 		"@types/jsonwebtoken": "^9.0.10",
-		"@types/node": "^24.10.2",
 		"prisma": "^7.1.0",
 		"tsx": "^4.21.0",
-		"typescript": "^5.9.3",
 		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^4.0.15"
 	},
 	"dependencies": {
 		"@prisma/client": "^6.17.1",
 		"jsonwebtoken": "^9.0.3",
+		"operations-package": "*",
 		"zod": "^4.2.1"
 	}
 }

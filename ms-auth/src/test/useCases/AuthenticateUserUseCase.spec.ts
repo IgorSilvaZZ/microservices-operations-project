@@ -57,6 +57,7 @@ describe("Authenticate User Use Case", () => {
 
 	it("should authenticate a user with valid credentials", async () => {
 		bcryptPasswordHasherFakeAdapter.compare.mockResolvedValue(true);
+		jwtProviderFakeAdapter.generateToken.mockResolvedValue("valid-token");
 		authenticateProviderFakeAdapter.authenticate.mockResolvedValue({
 			accessToken: "access-token",
 			idToken: "id-token",
