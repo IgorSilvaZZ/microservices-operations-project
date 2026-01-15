@@ -22,8 +22,18 @@ export async function authenticateUser(req: FastifyRequest, rep: FastifyReply) {
 			requestPayload,
 		);
 
+		const { user, cognitoAccessToken } = data;
+
+		const token = await rep.jwtSign({
+			sub: user.id,
+			email: user.email,
+			permissions: user.permissions,
+			cognitoAccessToken,
+		});
+
 		return rep.status(200).send({
-			...data,
+			user,
+			token,
 		});
 	} catch (error) {
 		console.error("RPC call failed:", error);

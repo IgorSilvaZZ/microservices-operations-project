@@ -7,6 +7,7 @@ const envSchema = z.object({
 	BROKER_URL: z.string(),
 	BROKER_USER: z.string(),
 	BROKER_PASSWORD: z.string(),
+	JWT_SECRET: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
