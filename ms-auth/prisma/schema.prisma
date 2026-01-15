@@ -69,30 +69,29 @@ model Users {
 
   profile Profile @relation(fields: [profileId], references: [id])
 
-  /**
-   * operations Operations[]
-   */
+  
+  // operations Operations[]
+  
 }
 
-/**
- * model Operations {
- * id        String           @id @default(uuid())
- * status    OperationsStatus @default(PENDING)
- * userId    String
- * createdAt DateTime         @default(now())
- * updatedAt DateTime         @default(now())
- * deletedAt DateTime?
- * user Users @relation(fields: [userId], references: [id])
- * operationsOrders OperationsOrders[]
- * }
- * model OperationsOrders {
- * id          String    @id @default(uuid())
- * operationId String
- * orderId     String
- * createdAt   DateTime  @default(now())
- * updatedAt   DateTime  @default(now())
- * deletedAt   DateTime?
- * operation Operations @relation(fields: [operationId], references: [id])
- * order     Orders     @relation(fields: [orderId], references: [id])
- * }
- */
+// model Operations {
+// id        String           @id @default(uuid())
+// status    OperationsStatus @default(PENDING)
+// userId    String
+// createdAt DateTime         @default(now())
+// updatedAt DateTime         @default(now())
+// deletedAt DateTime?
+// user Users @relation(fields: [userId], references: [id])
+// operationsOrders OperationsOrders[]
+// }
+// model OperationsOrders {
+// id          String    @id @default(uuid())
+// operationId String
+// orderId     String
+// createdAt   DateTime  @default(now())
+// updatedAt   DateTime  @default(now())
+// deletedAt   DateTime?
+// operation Operations @relation(fields: [operationId], references: [id])
+// order     Orders     @relation(fields: [orderId], references: [id])
+// }
+

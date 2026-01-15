@@ -16,19 +16,19 @@
 	"devDependencies": {
 		"@biomejs/biome": "^2.3.6",
 		"@types/jsonwebtoken": "^9.0.10",
-		"prisma": "^6.17.1",
+		"prisma": "5.22.0",
 		"tsx": "^4.20.6",
 		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^3.2.4"
 	},
 	"dependencies": {
-		"operations-package": "*",
 		"@aws-sdk/client-cognito-identity-provider": "^3.911.0",
-		"@prisma/client": "^6.17.1",
+		"@prisma/client": "5.22.0",
 		"bcryptjs": "^3.0.2",
 		"dotenv": "^17.2.3",
 		"fastify": "^5.6.1",
 		"jsonwebtoken": "^9.0.3",
+		"operations-package": "*",
 		"zod": "^4.1.12"
 	}
 }
