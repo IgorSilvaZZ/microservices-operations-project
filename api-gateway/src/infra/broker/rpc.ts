@@ -2,8 +2,8 @@
 import { randomUUID } from "node:crypto";
 
 import type { Channel } from "amqplib";
-import type { ContentRpcMessage } from "../../../contracts/messages/ContentRpcMessage.ts";
-import { RpcCallErrors } from "../errors/RpcCallErrors.ts";
+import type { ContentRpcMessage } from "../../../../contracts/messages/ContentRpcMessage.ts";
+import { RpcCallErrors } from "./errors/RpcCallErrors.ts";
 
 export async function rpcCall(
 	channel: Channel,

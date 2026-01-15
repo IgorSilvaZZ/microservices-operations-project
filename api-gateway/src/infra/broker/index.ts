@@ -1,6 +1,6 @@
 import { connect } from "amqplib";
 
-import { env } from "../env.ts";
+import { env } from "../../env.ts";
 
 export const broker = await connect({
 	hostname: env.BROKER_URL,
