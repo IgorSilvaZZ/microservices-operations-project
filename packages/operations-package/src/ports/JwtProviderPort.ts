@@ -5,6 +5,7 @@ export interface JwtPayload {
 	exp?: number;
 }
 
-export interface JwtProvider {
+export interface JwtProviderPort {
 	generateToken(payload: JwtPayload): Promise<string>;
+	verifyToken(token: string): void;
 }

@@ -2,10 +2,8 @@ import type { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 
 import { authenticateChannel } from "../../broker/channels/authenticate.ts";
-
+import { RpcCallErrors } from "../../broker/errors/RpcCallErrors.ts";
 import { rpcCall } from "../../broker/rpc.ts";
-
-import { RpcCallErrors } from "../../errors/RpcCallErrors.ts";
 
 export async function authenticateUser(req: FastifyRequest, rep: FastifyReply) {
 	const authenticateBodySchema = z.object({

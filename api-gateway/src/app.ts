@@ -2,10 +2,8 @@ import { fastifyCors } from "@fastify/cors";
 import fastify from "fastify";
 
 import { env } from "./env.ts";
-
-import { apiKeyPlugin } from "./plugins/api-key.plugin.ts";
-
-import { appRoutes } from "./router.ts";
+import { userRoutes } from "./infra/http/controllers/routes.ts";
+import { apiKeyPlugin } from "./infra/http/plugins/api-key.plugin.ts";
 
 const app = fastify();
 
@@ -18,6 +16,6 @@ app.register(fastifyCors, {
 	methods: ["POST", "GET", "OPTIONS"],
 });
 
-app.register(appRoutes);
+app.register(userRoutes);
 
 export { app };
