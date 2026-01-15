@@ -13,10 +13,11 @@
 		"tsx": "^4.20.6"
 	},
 	"dependencies": {
-		"operations-package": "*",
 		"@fastify/cors": "^11.1.0",
+		"@fastify/jwt": "^10.0.0",
 		"fastify": "^5.6.2",
 		"fastify-plugin": "^5.1.0",
+		"operations-package": "*",
 		"zod": "^4.1.12"
 	}
 }

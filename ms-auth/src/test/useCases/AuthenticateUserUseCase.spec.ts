@@ -6,7 +6,6 @@ import { Profile } from "@domain/entities/Profile";
 import { User } from "@domain/entities/User";
 import { AuthenticateProviderFakeAdapter } from "@test/fakes/AuthenticateProviderFakeAdapter";
 import { BcryptPasswordHasherFakeAdapter } from "@test/fakes/BcryptPasswordHasherFakeAdapter";
-import { JwtProviderFakeAdapter } from "@test/fakes/JwtProviderFakeAdapter";
 import { UserRepositoryFakeAdapter } from "@test/fakes/UserRepositoryFakeAdapter";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -14,7 +13,6 @@ describe("Authenticate User Use Case", () => {
 	let userRepositoryInMemory: UserRepositoryFakeAdapter;
 	let bcryptPasswordHasherFakeAdapter: BcryptPasswordHasherFakeAdapter;
 	let authenticateProviderFakeAdapter: AuthenticateProviderFakeAdapter;
-	let jwtProviderFakeAdapter: JwtProviderFakeAdapter;
 
 	let authenticateUserUseCase: AuthenticateUserUseCase;
 
@@ -22,7 +20,6 @@ describe("Authenticate User Use Case", () => {
 		userRepositoryInMemory = new UserRepositoryFakeAdapter();
 		bcryptPasswordHasherFakeAdapter = new BcryptPasswordHasherFakeAdapter();
 		authenticateProviderFakeAdapter = new AuthenticateProviderFakeAdapter();
-		jwtProviderFakeAdapter = new JwtProviderFakeAdapter();
 
 		userRepositoryInMemory.users.push(
 			new User({
@@ -47,7 +44,6 @@ describe("Authenticate User Use Case", () => {
 			userRepositoryInMemory,
 			bcryptPasswordHasherFakeAdapter,
 			authenticateProviderFakeAdapter,
-			jwtProviderFakeAdapter,
 		);
 	});
 
@@ -57,28 +53,27 @@ describe("Authenticate User Use Case", () => {
 
 	it("should authenticate a user with valid credentials", async () => {
 		bcryptPasswordHasherFakeAdapter.compare.mockResolvedValue(true);
-		jwtProviderFakeAdapter.generateToken.mockResolvedValue("valid-token");
 		authenticateProviderFakeAdapter.authenticate.mockResolvedValue({
 			accessToken: "access-token",
 			idToken: "id-token",
 			refreshToken: "refresh-token",
 		});
 
-		const { user, token } = await authenticateUserUseCase.authenticate({
-			email: "user@test.com",
-			password: "hashed-password",
-		});
+		const { user, cognitoAccessToken } =
+			await authenticateUserUseCase.authenticate({
+				email: "user@test.com",
+				password: "hashed-password",
+			});
 
 		expect(bcryptPasswordHasherFakeAdapter.compare).toBeCalledTimes(1);
 		expect(authenticateProviderFakeAdapter.authenticate).toBeCalledTimes(1);
-		expect(jwtProviderFakeAdapter.generateToken).toBeCalledTimes(1);
 
 		expect(authenticateProviderFakeAdapter.authenticate).toBeCalledWith(
 			"user@test.com",
 			"hashed-password",
 		);
 
-		expect(token).toEqual(expect.any(String));
+		expect(cognitoAccessToken).toEqual(expect.any(String));
 		expect(user.id).toEqual(expect.any(String));
 		expect(user).toHaveProperty("id");
 	});

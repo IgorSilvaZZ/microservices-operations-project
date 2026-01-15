@@ -6,7 +6,6 @@ import type {
 	AuthenticateUserRequest,
 	AuthenticateUserResponse,
 } from "@ports/AuthenticateUser";
-import type { JwtProvider } from "@ports/JwtProvider";
 import type { PasswordHasher } from "@ports/PasswordHasher";
 import type { UserRepository } from "@ports/UserRepository";
 
@@ -15,7 +14,6 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 		private userRepository: UserRepository,
 		private passwordHasher: PasswordHasher,
 		private authenticationProvider: AuthenticateProvider,
-		private jwtProvider: JwtProvider,
 	) {}
 
 	async authenticate({
@@ -38,22 +36,9 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 				password,
 			);
 
-			const permissions =
-				user.profile?.permissions.map((item) => item.name) || [];
-
-			const token = await this.jwtProvider.generateToken({
-				sub: user.id,
-				cognitoAccessToken: accessToken,
-				data: {
-					name: user.name,
-					email: user.email,
-					permissions,
-				},
-			});
-
 			return {
 				user: UserDomainToNormalizedMapper.toNormalized(user),
-				token,
+				cognitoAccessToken: accessToken,
 			};
 		} catch (error) {
 			console.log(error);
