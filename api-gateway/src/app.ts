@@ -2,7 +2,7 @@ import { fastifyCors } from "@fastify/cors";
 import fastifyJwt from "@fastify/jwt";
 import fastify from "fastify";
 import { env } from "./env.ts";
-import { userRoutes } from "./infra/http/controllers/routes.ts";
+import { userRoutes } from "./infra/http/controllers/users/routes.ts";
 import { apiKeyPlugin } from "./infra/http/plugins/api-key.plugin.ts";
 
 const app = fastify();
