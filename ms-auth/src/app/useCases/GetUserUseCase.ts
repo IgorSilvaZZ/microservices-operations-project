@@ -7,7 +7,7 @@ export class GetUserUseCase implements GetUser {
 	constructor(private userRepository: UserRepository) {}
 
 	async getUser({ id }: GetUserRequest): Promise<GetUserResponse> {
-		const user = await this.userRepository.findById(id);
+		const user = await this.userRepository.findByIdWithPermissions(id);
 
 		if (!user) {
 			throw new AppError("User not found!");

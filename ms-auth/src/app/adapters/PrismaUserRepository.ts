@@ -1,7 +1,7 @@
-import { prisma } from '@app/infra/prisma'
-import type { User } from '@domain/entities/User'
-import type { UserRepository } from '@domain/ports/UserRepository'
-import { PrismaUserMapper } from '@mappers/PrismaUserMapper'
+import { prisma } from "@app/infra/prisma";
+import type { User } from "@domain/entities/User";
+import type { UserRepository } from "@domain/ports/UserRepository";
+import { PrismaUserMapper } from "@mappers/PrismaUserMapper";
 
 export class PrismaUserRepository implements UserRepository {
 	async findById(id: string): Promise<User | null> {
@@ -9,11 +9,11 @@ export class PrismaUserRepository implements UserRepository {
 			where: {
 				id,
 			},
-		})
+		});
 
 		return user
 			? PrismaUserMapper.toDomainWithoutProfilePermissions(user)
-			: null
+			: null;
 	}
 
 	async findByEmail(email: string): Promise<User | null> {
@@ -21,11 +21,11 @@ export class PrismaUserRepository implements UserRepository {
 			where: {
 				email,
 			},
-		})
+		});
 
 		return user
 			? PrismaUserMapper.toDomainWithoutProfilePermissions(user)
-			: null
+			: null;
 	}
 
 	async findByEmailWithPermissions(email: string): Promise<User | null> {
@@ -42,8 +42,27 @@ export class PrismaUserRepository implements UserRepository {
 					},
 				},
 			},
-		})
+		});
 
-		return user ? PrismaUserMapper.toDomainWithProfilePermissions(user) : null
+		return user ? PrismaUserMapper.toDomainWithProfilePermissions(user) : null;
+	}
+
+	async findByIdWithPermissions(id: string): Promise<User | null> {
+		const user = await prisma.users.findUnique({
+			where: { id },
+			include: {
+				profile: {
+					include: {
+						profilePermissions: {
+							include: {
+								permission: true,
+							},
+						},
+					},
+				},
+			},
+		});
+
+		return user ? PrismaUserMapper.toDomainWithProfilePermissions(user) : null;
 	}
 }

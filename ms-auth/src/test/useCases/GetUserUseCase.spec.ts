@@ -23,7 +23,10 @@ describe("Get User Use Case", () => {
 	});
 
 	it("should be able to get user by id", async () => {
-		const spyFindById = vi.spyOn(userRepositoryInMemory, "findById");
+		const spyFindById = vi.spyOn(
+			userRepositoryInMemory,
+			"findByIdWithPermissions",
+		);
 
 		userRepositoryInMemory.users.push(
 			new User({
@@ -54,7 +57,10 @@ describe("Get User Use Case", () => {
 	});
 
 	it("should not be able to get user with not found user", async () => {
-		const spyFindById = vi.spyOn(userRepositoryInMemory, "findById");
+		const spyFindById = vi.spyOn(
+			userRepositoryInMemory,
+			"findByIdWithPermissions",
+		);
 
 		await expect(() => {
 			return getUserUseCase.getUser({ id: "invalid-id" });

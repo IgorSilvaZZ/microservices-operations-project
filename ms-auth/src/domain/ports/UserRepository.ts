@@ -1,7 +1,8 @@
-import type { User } from '../entities/User'
+import type { User } from "../entities/User";
 
 export interface UserRepository {
-	findById(id: string): Promise<User | null>
-	findByEmail(email: string): Promise<User | null>
-	findByEmailWithPermissions(email: string): Promise<User | null>
+	findById(id: string): Promise<User | null>;
+	findByIdWithPermissions(id: string): Promise<User | null>;
+	findByEmail(email: string): Promise<User | null>;
+	findByEmailWithPermissions(email: string): Promise<User | null>;
 }
