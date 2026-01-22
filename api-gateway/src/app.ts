@@ -1,9 +1,9 @@
 import { fastifyCors } from "@fastify/cors";
 import fastifyJwt from "@fastify/jwt";
 import fastify from "fastify";
+import { RpcCallErrors } from "operations-package";
 import { ZodError } from "zod";
 import { env } from "./env.ts";
-import { RpcCallErrors } from "./infra/broker/errors/RpcCallErrors.ts";
 import { userRoutes } from "./infra/http/controllers/users/routes.ts";
 import { apiKeyPlugin } from "./infra/http/plugins/api-key.plugin.ts";
 
