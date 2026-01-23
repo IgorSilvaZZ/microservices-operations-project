@@ -1,7 +1,6 @@
 import type { GetUserRequest } from "@domain/ports/GetUser";
 import { makeGetUserUseCase } from "@factories/MakeGetUserUseCase";
-import type { QueueConsumerProps } from "operations-package";
-import { GET_USER_QUEUE } from "../shared/Queues";
+import { GET_USER_QUEUE, type QueueConsumerProps } from "operations-package";
 import { rabbitMqQueueClient } from "../shared/RabbitMQClient";
 
 export async function getUserConsumer(): Promise<void> {

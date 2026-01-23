@@ -1,13 +1,12 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
+import { GET_USER_QUEUE } from "operations-package";
 
-import { getUserChannel } from "../../../broker/channels/users.ts";
-
-import { rpcCall } from "../../../broker/rpc.ts";
+import { broker } from "../../../broker/index.ts";
 
 export async function profile(req: FastifyRequest, rep: FastifyReply) {
 	await req.jwtVerify();
 
-	const { data } = await rpcCall(getUserChannel, "get_user_queue", {
+	const { data } = await broker.rpcCall(GET_USER_QUEUE, {
 		id: req.user.sub,
 	});
 

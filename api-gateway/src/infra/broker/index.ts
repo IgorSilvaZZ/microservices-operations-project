@@ -1,4 +1,8 @@
-import { RabbitMQClient } from "operations-package";
+import {
+	AUTHENTICATE_QUEUE,
+	GET_USER_QUEUE,
+	RabbitMQClient,
+} from "operations-package";
 
 import { env } from "../../env.ts";
 
@@ -7,3 +11,6 @@ export const broker = new RabbitMQClient({
 	username: env.BROKER_USER,
 	password: env.BROKER_PASSWORD,
 });
+
+await broker.registerChannel(AUTHENTICATE_QUEUE);
+await broker.registerChannel(GET_USER_QUEUE);

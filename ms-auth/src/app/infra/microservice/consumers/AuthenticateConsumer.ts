@@ -1,7 +1,9 @@
 import { makeAuthenticateUserUseCase } from "@factories/MakeAuthenticateUserUseCase";
 import type { AuthenticateUserRequest } from "@ports/AuthenticateUser";
-import type { QueueConsumerProps } from "operations-package";
-import { AUTHENTICATE_QUEUE } from "../shared/Queues";
+import {
+	AUTHENTICATE_QUEUE,
+	type QueueConsumerProps,
+} from "operations-package";
 import { rabbitMqQueueClient } from "../shared/RabbitMQClient";
 
 export async function authenticateConsumer(): Promise<void> {

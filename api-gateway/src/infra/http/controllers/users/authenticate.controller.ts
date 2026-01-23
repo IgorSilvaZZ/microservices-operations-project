@@ -1,8 +1,8 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
+import { AUTHENTICATE_QUEUE } from "operations-package";
 import z from "zod";
 
-import { authenticateChannel } from "../../../broker/channels/users.ts";
-import { rpcCall } from "../../../broker/rpc.ts";
+import { broker } from "../../../broker/index.ts";
 
 export async function authenticateUser(req: FastifyRequest, rep: FastifyReply) {
 	const authenticateBodySchema = z.object({
@@ -14,11 +14,7 @@ export async function authenticateUser(req: FastifyRequest, rep: FastifyReply) {
 
 	const requestPayload = { email, password };
 
-	const { data } = await rpcCall(
-		authenticateChannel,
-		"authenticate_queue",
-		requestPayload,
-	);
+	const { data } = await broker.rpcCall(AUTHENTICATE_QUEUE, requestPayload);
 
 	const { user, cognitoAccessToken } = data;
 

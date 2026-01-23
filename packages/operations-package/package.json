@@ -1,19 +1,28 @@
 {
 	"name": "operations-package",
 	"version": "1.0.0",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
+	"main": "./dist/index.cjs",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
 	"license": "MIT",
 	"scripts": {
 		"dev": "tsc --watch",
-		"build": "tsc --project tsconfig.json"
+		"build": "tsup"
 	},
 	"devDependencies": {
 		"@types/amqplib": "^0.10.8",
 		"@types/node": "^25.0.7",
+		"tsup": "^8.5.1",
 		"typescript": "^5.9.3"
 	},
 	"dependencies": {
 		"amqplib": "^0.10.9"
+	},
+	"exports": {
+		".": {
+			"import": "./dist/index.js",
+			"require": "./dist/index.cjs",
+			"types": "./dist/index.d.ts"
+		}
 	}
 }
