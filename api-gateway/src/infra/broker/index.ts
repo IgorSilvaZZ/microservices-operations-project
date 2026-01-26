@@ -12,5 +12,7 @@ export const broker = new RabbitMQClient({
 	password: env.BROKER_PASSWORD,
 });
 
-await broker.registerChannel(AUTHENTICATE_QUEUE);
-await broker.registerChannel(GET_USER_QUEUE);
+(async () => {
+	await broker.registerChannel(AUTHENTICATE_QUEUE);
+	await broker.registerChannel(GET_USER_QUEUE);
+})();
