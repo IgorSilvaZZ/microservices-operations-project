@@ -5,15 +5,27 @@ import type {
 	OrderCreateResponse,
 } from "@ports/OrderCreate";
 import type { OrderRepository } from "@ports/OrderRepository";
+import {
+	AppError,
+	GET_USER_QUEUE,
+	type RabbitMQClientPort,
+} from "operations-package";
 
 export class CreateOrderUseCase implements OrderCreate {
-	constructor(private orderRepository: OrderRepository) {}
+	constructor(
+		private orderRepository: OrderRepository,
+		private rabbitMqClient: RabbitMQClientPort,
+	) {}
 
 	async create(data: OrderCreateRequest): Promise<OrderCreateResponse> {
-		// TODO: Validar se o usuario existe (enviar para o microserviço ms-auth)
-		// TODO: Implementar chamada RPC aqui, utilizando o adapter compartilhado (operations-package)
+		const user = await this.rabbitMqClient.rpcCall(GET_USER_QUEUE, {
+			id: data.userId,
+		});
 
-		// Criar order no banco de dados
+		if (!user) {
+			throw new AppError("User not found");
+		}
+
 		const order = await this.orderRepository.create(data);
 
 		return OrderDomainToNormalizedMapper.toNormalized(order);

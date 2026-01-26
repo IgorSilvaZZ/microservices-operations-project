@@ -7,8 +7,8 @@ export interface RabbitMQClientPort {
 	publish(queueName: string, message: unknown): Promise<void>;
 	registerChannel(channelName: string): Promise<void>;
 	rpcCall(
-		channelName: string,
 		queueName: string,
-		message: unknown,
+		message: any,
+		timeoutMs?: number,
 	): Promise<ContentRpcMessage>;
 }
