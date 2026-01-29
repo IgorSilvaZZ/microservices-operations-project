@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from "fastify";
 
-export async function verifyPermission(permission: string) {
+export function verifyPermission(permission: string) {
 	return async (req: FastifyRequest, rep: FastifyReply) => {
 		try {
 			const userPermissions: string[] = req.user.permissions || [];

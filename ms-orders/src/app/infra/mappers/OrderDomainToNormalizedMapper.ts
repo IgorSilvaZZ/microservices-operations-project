@@ -5,7 +5,7 @@ export class OrderDomainToNormalizedMapper {
 	static toNormalized(order: Order) {
 		return {
 			id: order.id,
-			number: order.number,
+			value: order.value,
 			description: order.description,
 			userId: order.userId,
 			status: order.status,

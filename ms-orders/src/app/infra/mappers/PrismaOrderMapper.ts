@@ -7,7 +7,7 @@ export class PrismaOrderMapper {
 		return new Order({
 			id: raw.id,
 			description: raw.description,
-			number: raw.number,
+			value: raw.value.toNumber(),
 			status: raw.status as OrderStatusEnum,
 			userId: raw.userId,
 			createdAt: raw.createdAt,

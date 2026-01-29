@@ -10,9 +10,9 @@ export enum OrderStatusEnum {
 
 export interface OrderProps {
 	id?: string;
-	number: string;
 	status: OrderStatusEnum;
 	description: string;
+	value: number;
 	userId: string;
 	createdAt?: Date;
 	updatedAt?: Date;
@@ -21,7 +21,7 @@ export interface OrderProps {
 
 export class Order {
 	private _id: string;
-	private _number: string;
+	private _value: number;
 	private _description: string;
 	private _status: OrderStatusEnum = OrderStatusEnum.PENDING;
 	private _userId: string;
@@ -31,7 +31,7 @@ export class Order {
 
 	constructor(props: OrderProps) {
 		this._id = props.id ?? randomUUID();
-		this._number = props.number;
+		this._value = props.value;
 		this._description = props.description;
 		this._status = props.status;
 		this._userId = props.userId;
@@ -43,8 +43,8 @@ export class Order {
 		return this._id;
 	}
 
-	get number(): string {
-		return this._number;
+	get value(): number {
+		return this._value;
 	}
 
 	get description(): string {
@@ -71,8 +71,8 @@ export class Order {
 		return this._deletedAt;
 	}
 
-	set number(newNumber: string) {
-		this._number = newNumber;
+	set value(newValue: number) {
+		this._value = newValue;
 
 		this.syncUpdatedAt();
 	}

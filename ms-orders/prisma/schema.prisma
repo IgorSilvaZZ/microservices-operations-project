@@ -26,6 +26,7 @@ model Orders {
   number      String       @unique
   status      OrdersStatus @default(PENDING)
   description String
+  value       Decimal
   userId      String
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now())

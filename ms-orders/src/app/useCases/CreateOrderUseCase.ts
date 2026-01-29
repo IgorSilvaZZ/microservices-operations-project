@@ -18,9 +18,14 @@ export class CreateOrderUseCase implements OrderCreate {
 	) {}
 
 	async create(data: OrderCreateRequest): Promise<OrderCreateResponse> {
-		const user = await this.rabbitMqClient.rpcCall(GET_USER_QUEUE, {
-			id: data.userId,
-		});
+		const { data: response } = await this.rabbitMqClient.rpcCall(
+			GET_USER_QUEUE,
+			{
+				id: data.userId,
+			},
+		);
+
+		const user = response.user;
 
 		if (!user) {
 			throw new AppError("User not found");

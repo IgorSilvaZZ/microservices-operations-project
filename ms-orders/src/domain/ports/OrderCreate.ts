@@ -1,7 +1,7 @@
 import type { OrderStatusEnum } from "@domain/entities/Order";
 
 export interface OrderCreateRequest {
-	number: string;
+	value: number;
 	description: string;
 	userId: string;
 	status: OrderStatusEnum;
@@ -9,7 +9,7 @@ export interface OrderCreateRequest {
 
 export interface OrderCreateResponse {
 	id: string;
-	number: string;
+	value: number;
 	description: string;
 	userId: string;
 	status: OrderStatusEnum;

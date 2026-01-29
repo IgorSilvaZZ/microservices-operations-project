@@ -7,8 +7,7 @@ const envSchema = z.object({
 	DATABASE_URL: z.string(),
 	RABBITMQ_URL: z.string(),
 	RABBITMQ_USER: z.string(),
-	RABBITMQ_PASSWORD: z.string(),
-	JWT_SECRET: z.string(),
+	RABBITMQ_PASSWORD: z.string()
 });
 
 const _env = envSchema.safeParse(process.env);

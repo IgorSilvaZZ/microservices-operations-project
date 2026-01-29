@@ -8,14 +8,10 @@ import type { OrderRepository } from "@ports/OrderRepository";
 export class OrderRepositoryFakeAdapter implements OrderRepository {
 	public orders: Order[] = [];
 
-	async findByNumber(number: string): Promise<Order | null> {
-		return this.orders.find((order) => order.number === number) || null;
-	}
-
 	async create(data: OrderCreateRequest): Promise<Order> {
 		const order = new Order({
-			id: data.id ?? randomUUID(),
-			number: data.number,
+			id: randomUUID(),
+			value: data.value,
 			description: data.description,
 			userId: data.userId,
 			status: data.status ?? OrderStatusEnum.PENDING,

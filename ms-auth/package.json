@@ -4,8 +4,7 @@
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
-		"dev:http": "tsx watch src/app/infra/http/server.ts",
-		"dev:microservice": "tsx watch src/app/infra/microservice/app.ts",
+		"dev": "tsx watch src/app/infra/microservice/app.ts",
 		"build": "tsc --project tsconfig.json",
 		"test": "vitest run --silent",
 		"test:watch": "vitest watch",
