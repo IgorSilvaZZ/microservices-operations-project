@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"scripts": {
 		"build": "tsc --project tsconfig.json",
+		"dev": "tsx watch src/app/infra/microservice/app.ts",
 		"test": "vitest run --silent",
 		"test:watch": "vitest watch",
 		"lint:lint": "biome lint --write",

@@ -25,7 +25,7 @@
 			"@test/*": ["./src/test/*"],
 			"@infra/*": ["./src/app/infra/*"],
 			"@mappers/*": ["./src/app/infra/mappers/*"],
-			"@factories/*": ["./src/app/factories/*"],
+			"@factories/*": ["src/app/infra/factories/*"],
 			"@microservice/*": ["./src/app/infra/microservice/*"]
 		}
 	},

@@ -1,5 +1,6 @@
 import type { Order } from "@domain/entities/Order";
 
+// biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export class OrderDomainToNormalizedMapper {
 	static toNormalized(order: Order) {
 		return {

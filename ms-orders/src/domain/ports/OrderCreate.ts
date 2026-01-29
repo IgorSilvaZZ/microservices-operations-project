@@ -4,7 +4,7 @@ export interface OrderCreateRequest {
 	number: string;
 	description: string;
 	userId: string;
-	status?: OrderStatusEnum;
+	status: OrderStatusEnum;
 }
 
 export interface OrderCreateResponse {
