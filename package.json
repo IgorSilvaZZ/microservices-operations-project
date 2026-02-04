@@ -11,6 +11,9 @@
 		"packages/*"
 	],
 	"scripts": {
-		"dev": "yarn workspace operations-package dev"
+		"api:dev": "yarn workspace api-gateway dev",
+		"auth:dev": "yarn workspace ms-auth dev",
+		"orders:dev": "yarn workspace ms-orders dev",
+		"operations:build": "yarn workspace operations-package build"
 	}
 }

@@ -69,9 +69,7 @@ model Users {
 
   profile Profile @relation(fields: [profileId], references: [id])
 
-  
   // operations Operations[]
-  
 }
 
 // model Operations {
@@ -94,4 +92,3 @@ model Users {
 // operation Operations @relation(fields: [operationId], references: [id])
 // order     Orders     @relation(fields: [orderId], references: [id])
 // }
-

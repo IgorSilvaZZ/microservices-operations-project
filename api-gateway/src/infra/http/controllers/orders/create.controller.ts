@@ -5,18 +5,15 @@ import { OrderStatusEnum } from "../../../../shared/enums/OrderStatusEnum";
 import { broker } from "../../../broker";
 
 export async function create(req: FastifyRequest, rep: FastifyReply) {
-	await req.jwtVerify();
-
 	const createOrderSchema = z.object({
 		value: z.number(),
 		description: z.string().default(""),
-		userId: z.uuid(),
 		status: z.enum(OrderStatusEnum).default(OrderStatusEnum.PENDING),
 	});
 
-	const { value, description, status, userId } = createOrderSchema.parse(
-		req.body,
-	);
+	const { value, description, status } = createOrderSchema.parse(req.body);
+
+	const userId = req.user.sub;
 
 	const { data } = await broker.rpcCall(CREATE_ORDER_QUEUE, {
 		value,

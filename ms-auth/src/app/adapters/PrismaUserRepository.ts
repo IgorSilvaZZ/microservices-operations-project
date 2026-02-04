@@ -5,7 +5,7 @@ import { PrismaUserMapper } from "@mappers/PrismaUserMapper";
 
 export class PrismaUserRepository implements UserRepository {
 	async findById(id: string): Promise<User | null> {
-		const user = await prisma.users.findUnique({
+		const user = await prisma.users.findFirst({
 			where: {
 				id,
 			},
@@ -48,7 +48,7 @@ export class PrismaUserRepository implements UserRepository {
 	}
 
 	async findByIdWithPermissions(id: string): Promise<User | null> {
-		const user = await prisma.users.findUnique({
+		const user = await prisma.users.findFirst({
 			where: { id },
 			include: {
 				profile: {

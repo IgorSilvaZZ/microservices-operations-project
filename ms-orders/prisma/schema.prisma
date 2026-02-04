@@ -23,7 +23,6 @@ enum OrdersStatus {
 
 model Orders {
   id          String       @id @default(uuid())
-  number      String       @unique
   status      OrdersStatus @default(PENDING)
   description String
   value       Decimal

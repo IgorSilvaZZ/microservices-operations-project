@@ -23,7 +23,8 @@ app.register(fastifyCors, {
 	methods: ["POST", "GET", "OPTIONS"],
 });
 
-app.register(userRoutes, ordersRoutes);
+app.register(userRoutes);
+app.register(ordersRoutes);
 
 app.setErrorHandler((error, _, reply) => {
 	console.error(error);

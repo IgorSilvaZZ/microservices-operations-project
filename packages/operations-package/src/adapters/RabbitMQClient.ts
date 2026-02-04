@@ -132,6 +132,8 @@ export class RabbitMQClient implements RabbitMQClientPort {
 		message: any,
 		timeoutMs: number = 30000,
 	): Promise<ContentRpcMessage> {
+		await this.registerChannel(queueName);
+
 		const channel = this.channels.get(queueName);
 
 		if (!channel) {

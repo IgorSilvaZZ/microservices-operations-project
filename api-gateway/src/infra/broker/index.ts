@@ -1,5 +1,6 @@
 import {
 	AUTHENTICATE_QUEUE,
+	CREATE_ORDER_QUEUE,
 	GET_USER_QUEUE,
 	RabbitMQClient,
 } from "operations-package";
@@ -12,7 +13,8 @@ export const broker = new RabbitMQClient({
 	password: env.BROKER_PASSWORD,
 });
 
-(async () => {
+export async function registerChannels() {
 	await broker.registerChannel(AUTHENTICATE_QUEUE);
 	await broker.registerChannel(GET_USER_QUEUE);
-})();
+	await broker.registerChannel(CREATE_ORDER_QUEUE);
+}
