@@ -1,7 +1,7 @@
 export enum OrderStatusEnum {
-	PENDING = "pending",
-	PROCESSING = "processing",
-	REPROVED = "reproved",
-	APPROVED = "approved",
-	FINISHED = "finished",
+	PENDING = "PENDING",
+	PROCESSING = "PROCESSING",
+	REPROVED = "REPROVED",
+	APPROVED = "APPROVED",
+	FINISHED = "FINISHED",
 }

@@ -1,5 +1,5 @@
 import { Order, type OrderStatusEnum } from "@domain/entities/Order";
-import type { Orders as PrismaOrders } from "@prisma/client";
+import type { Orders as PrismaOrders } from "../../prisma";
 
 // biome-ignore lint/complexity/noStaticOnlyClass: <explanation>
 export class PrismaOrderMapper {

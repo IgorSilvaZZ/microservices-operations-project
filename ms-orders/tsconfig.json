@@ -5,7 +5,7 @@
 		"lib": ["ES2022"],
 		"allowJs": true,
 		"outDir": "./dist",
-		"rootDir": "./src",
+		// "rootDir": "./src",
 		"strict": true,
 		"moduleResolution": "node",
 		"allowSyntheticDefaultImports": true,
@@ -30,6 +30,6 @@
 			"@microservice/*": ["./src/app/infra/microservice/*"]
 		}
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "prisma/generated/**/*"],
 	"exclude": ["node_modules", "dist"]
 }
