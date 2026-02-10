@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client'
+import type { Prisma } from "../";
 
 export type UserWithProfilePermissions = Prisma.UsersGetPayload<{
 	include: {
@@ -6,10 +6,10 @@ export type UserWithProfilePermissions = Prisma.UsersGetPayload<{
 			include: {
 				profilePermissions: {
 					include: {
-						permission: true
-					}
-				}
-			}
-		}
-	}
-}>
+						permission: true;
+					};
+				};
+			};
+		};
+	};
+}>;

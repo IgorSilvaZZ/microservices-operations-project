@@ -11,9 +11,14 @@
 		"packages/*"
 	],
 	"scripts": {
+		"operations:build": "yarn workspace operations-package build",
 		"api:dev": "yarn workspace api-gateway dev",
 		"auth:dev": "yarn workspace ms-auth dev",
+		"auth:prisma:migrate:dev": "yarn workspace ms-auth prisma dev",
+		"auth:prisma:generate": "yarn workspace ms-auth prisma generate",
+		"auth:test": "yarn workspace ms-auth test",
 		"orders:dev": "yarn workspace ms-orders dev",
-		"operations:build": "yarn workspace operations-package build"
+		"orders:prisma:migrate:dev": "yarn workspace ms-orders prisma dev",
+		"orders:prisma:generate": "yarn workspace ms-auth prisma generate"
 	}
 }

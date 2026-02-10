@@ -63,3 +63,5 @@ pids
 tmp/
 temp/
 /src/generated/prisma
+
+prisma/generated/
