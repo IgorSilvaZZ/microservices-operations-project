@@ -19,6 +19,7 @@
 		"auth:test": "yarn workspace ms-auth test",
 		"orders:dev": "yarn workspace ms-orders dev",
 		"orders:prisma:migrate:dev": "yarn workspace ms-orders prisma dev",
-		"orders:prisma:generate": "yarn workspace ms-orders prisma generate"
+		"orders:prisma:generate": "yarn workspace ms-orders prisma generate",
+		"orders:test": "yarn workspace ms-orders test"
 	}
 }
