@@ -8,15 +8,19 @@ import type { OrderRepository } from "@ports/OrderRepository";
 export class OrderRepositoryFakeAdapter implements OrderRepository {
 	public orders: Order[] = [];
 
-	async getByUserIdWithFilters({
+	async searchManyByUserId({
 		userId,
 		page,
-		status,
+		filters,
 	}: ListOrdersByUserIdRequest): Promise<Order[]> {
 		let ordersByUser = this.orders.filter((item) => item.userId === userId);
 
-		if (status) {
-			ordersByUser = ordersByUser.filter((item) => item.status === status);
+		if (filters) {
+			if (filters.status) {
+				ordersByUser = ordersByUser.filter(
+					(item) => item.status === filters.status,
+				);
+			}
 		}
 
 		return ordersByUser.slice((page - 1) * 20, page * 20);

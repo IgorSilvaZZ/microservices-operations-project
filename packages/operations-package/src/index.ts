@@ -6,6 +6,7 @@ export { AppError } from "./shared/AppErrors";
 export {
 	AUTHENTICATE_QUEUE,
 	CREATE_ORDER_QUEUE,
+	GET_ORDERS_BY_USER_ID_QUEUE,
 	GET_USER_QUEUE,
 } from "./shared/Consts";
 export { RabbitMQConfig } from "./shared/interfaces/RabbitMQConfig";

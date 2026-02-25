@@ -16,7 +16,7 @@ export class ListOrdersByUserIdUseCase {
 
 	async execute({
 		userId,
-		status,
+		filters,
 		page,
 	}: ListOrdersByUserIdRequest): Promise<OrderCreateResponse[]> {
 		const { data: response } = await this.rabbitMqClient.rpcCall(
@@ -32,9 +32,9 @@ export class ListOrdersByUserIdUseCase {
 			throw new AppError("User not found");
 		}
 
-		const orders = await this.ordersRepository.getByUserIdWithFilters({
+		const orders = await this.ordersRepository.searchManyByUserId({
 			userId,
-			status,
+			filters,
 			page,
 		});
 
