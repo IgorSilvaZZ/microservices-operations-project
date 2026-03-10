@@ -1,25 +1,25 @@
-import fastify from 'fastify'
-import { ZodError } from 'zod'
+import fastify from "fastify";
+import { ZodError } from "zod";
 
-import { appRoutes } from './routes'
+import { appRoutes } from "./routes";
 
-export const app = fastify()
+export const app = fastify();
 
-app.register(appRoutes)
+app.register(appRoutes);
 
 app.setErrorHandler((error, _, reply) => {
 	if (error instanceof ZodError) {
 		return reply.status(400).send({
-			message: 'Validation error',
+			message: "Validation error",
 			issues: error.format(),
-		})
+		});
 	}
 
 	if (error instanceof Error) {
-		return reply.status(400).send({ message: error.message })
+		return reply.status(400).send({ message: error.message });
 	}
 
-	console.error(error)
+	console.error(error);
 
-	return reply.status(500).send({ message: 'Internal server error' })
-})
+	return reply.status(500).send({ message: "Internal server error" });
+});

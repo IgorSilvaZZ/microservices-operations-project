@@ -1,66 +1,66 @@
-import { randomUUID } from 'node:crypto'
-import { describe, expect, it } from 'vitest'
-import { Permissions } from './Permissions'
-import { Profile } from './Profile'
-import { User, type UserProps } from './User'
+import { randomUUID } from "node:crypto";
+import { describe, expect, it } from "vitest";
+import { Permissions } from "./Permissions";
+import { Profile } from "./Profile";
+import { User, type UserProps } from "./User";
 
-describe('User Entity', () => {
+describe("User Entity", () => {
 	const userProps: UserProps = {
-		name: 'User Test',
-		email: 'user@test.com',
-		password: '123456',
-		profileId: 'profile-id',
-		subId: 'sub-id',
+		name: "User Test",
+		email: "user@test.com",
+		password: "123456",
+		profileId: "profile-id",
+		subId: "sub-id",
 		profile: new Profile({
-			description: 'Profile Test',
+			description: "Profile Test",
 			permissions: [
-				new Permissions({ name: 'CREATE_ORDERS' }),
-				new Permissions({ name: 'GET_ORDERS' }),
-				new Permissions({ name: 'GET_OPERATIONS' }),
+				new Permissions({ name: "CREATE_ORDERS" }),
+				new Permissions({ name: "GET_ORDERS" }),
+				new Permissions({ name: "GET_OPERATIONS" }),
 			],
 		}),
-	}
+	};
 
-	it('should be able to create a user', () => {
-		const user = new User(userProps)
+	it("should be able to create a user", () => {
+		const user = new User(userProps);
 
-		expect(user).toBeTruthy()
-		expect(user).toBeInstanceOf(User)
-	})
+		expect(user).toBeTruthy();
+		expect(user).toBeInstanceOf(User);
+	});
 
-	it('should be able to update user name', () => {
-		const user = new User(userProps)
+	it("should be able to update user name", () => {
+		const user = new User(userProps);
 
-		const newName = 'New User Name'
+		const newName = "New User Name";
 
-		user.name = newName
+		user.name = newName;
 
-		expect(user.name).toBe(newName)
-	})
+		expect(user.name).toBe(newName);
+	});
 
-	it('should be able to update user profileId', () => {
-		const user = new User(userProps)
+	it("should be able to update user profileId", () => {
+		const user = new User(userProps);
 
-		const newProfileId = randomUUID()
+		const newProfileId = randomUUID();
 
-		user.profileId = newProfileId
+		user.profileId = newProfileId;
 
-		expect(user.profileId).toBe(newProfileId)
-	})
+		expect(user.profileId).toBe(newProfileId);
+	});
 
-	it('should be able to create user without profile', () => {
+	it("should be able to create user without profile", () => {
 		const userWithoutProfile: UserProps = {
-			name: 'User Test',
-			email: 'user@test.com',
-			password: '123456',
-			profileId: 'profile-id',
-			subId: 'sub-id',
+			name: "User Test",
+			email: "user@test.com",
+			password: "123456",
+			profileId: "profile-id",
+			subId: "sub-id",
 			profile: null,
-		}
+		};
 
-		const user = new User(userWithoutProfile)
+		const user = new User(userWithoutProfile);
 
-		expect(user).toBeTruthy()
-		expect(user).toBeInstanceOf(User)
-	})
-})
+		expect(user).toBeTruthy();
+		expect(user).toBeInstanceOf(User);
+	});
+});

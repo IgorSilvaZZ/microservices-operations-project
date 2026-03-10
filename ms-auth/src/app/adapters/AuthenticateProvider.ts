@@ -1,66 +1,66 @@
-import { createHmac } from 'node:crypto'
-import { env } from '@app/env'
+import { createHmac } from "node:crypto";
+import { env } from "@app/env";
 import {
 	CognitoIdentityProviderClient,
 	InitiateAuthCommand,
-} from '@aws-sdk/client-cognito-identity-provider'
+} from "@aws-sdk/client-cognito-identity-provider";
 
 import type {
 	AuthenticateProvider,
 	AuthenticateProviderResponse,
-} from '@domain/ports/AuthenticateProvider'
+} from "@domain/ports/AuthenticateProvider";
 
 export class AuthenticateProviderAdapter implements AuthenticateProvider {
-	private client: CognitoIdentityProviderClient
+	private client: CognitoIdentityProviderClient;
 
 	constructor() {
-		this.client = new CognitoIdentityProviderClient({ region: 'us-east-1' })
+		this.client = new CognitoIdentityProviderClient({ region: "us-east-1" });
 	}
 
 	private generateSecretHash(email: string) {
-		return createHmac('SHA256', env.COGNITO_CLIENT_SECRET)
+		return createHmac("SHA256", env.COGNITO_CLIENT_SECRET)
 			.update(email + env.COGNITO_CLIENT_ID)
-			.digest('base64')
+			.digest("base64");
 	}
 
 	async authenticate(
 		email: string,
 		password: string,
 	): Promise<AuthenticateProviderResponse> {
-		const secretHash = this.generateSecretHash(email)
+		const secretHash = this.generateSecretHash(email);
 
 		const command = new InitiateAuthCommand({
-			AuthFlow: 'USER_PASSWORD_AUTH',
+			AuthFlow: "USER_PASSWORD_AUTH",
 			ClientId: env.COGNITO_CLIENT_ID,
 			AuthParameters: {
 				USERNAME: email,
 				PASSWORD: password,
 				SECRET_HASH: secretHash,
 			},
-		})
+		});
 
 		try {
-			const response = await this.client.send(command)
+			const response = await this.client.send(command);
 
-			const accessToken = response.AuthenticationResult?.AccessToken ?? ''
-			const idToken = response.AuthenticationResult?.IdToken ?? ''
-			const refreshToken = response.AuthenticationResult?.RefreshToken ?? ''
+			const accessToken = response.AuthenticationResult?.AccessToken ?? "";
+			const idToken = response.AuthenticationResult?.IdToken ?? "";
+			const refreshToken = response.AuthenticationResult?.RefreshToken ?? "";
 
 			return {
 				accessToken,
 				idToken,
 				refreshToken,
-			}
+			};
 		} catch (error: any) {
-			if (error.name === 'NotAuthorizedException') {
-				console.log('Usuário ou senha incorretos.')
+			if (error.name === "NotAuthorizedException") {
+				console.log("Usuário ou senha incorretos.");
 			}
 
-			if (error.name === 'UserNotFoundException') {
-				console.log('Usuário não encontrado.')
+			if (error.name === "UserNotFoundException") {
+				console.log("Usuário não encontrado.");
 			}
 
-			throw error
+			throw error;
 		}
 	}
 }

@@ -1,4 +1,4 @@
-/** biome-ignore-all lint/complexity/noStaticOnlyClass: <explanation> */
+/** biome-ignore-all lint/complexity/noStaticOnlyClass: Ignorar erro de classes estáticas */
 import { Permissions } from "@domain/entities/Permissions";
 import { Profile } from "@domain/entities/Profile";
 import { User } from "@domain/entities/User";

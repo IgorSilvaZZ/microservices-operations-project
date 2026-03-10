@@ -1,21 +1,21 @@
-import { describe, expect, it } from 'vitest'
-import { Permissions } from './Permissions'
-import { Profile } from './Profile'
+import { describe, expect, it } from "vitest";
+import { Permissions } from "./Permissions";
+import { Profile } from "./Profile";
 
-describe('Profile Entity', () => {
-	it('should be able to create a user', () => {
+describe("Profile Entity", () => {
+	it("should be able to create a user", () => {
 		const permissionsProfile: Permissions[] = [
-			new Permissions({ name: 'CREATE_ORDERS' }),
-			new Permissions({ name: 'GET_ORDERS' }),
-			new Permissions({ name: 'GET_OPERATIONS' }),
-		]
+			new Permissions({ name: "CREATE_ORDERS" }),
+			new Permissions({ name: "GET_ORDERS" }),
+			new Permissions({ name: "GET_OPERATIONS" }),
+		];
 
 		const profile = new Profile({
-			description: 'Profile Test',
+			description: "Profile Test",
 			permissions: permissionsProfile,
-		})
+		});
 
-		expect(profile).toBeTruthy()
-		expect(profile).toBeInstanceOf(Profile)
-	})
-})
+		expect(profile).toBeTruthy();
+		expect(profile).toBeInstanceOf(Profile);
+	});
+});

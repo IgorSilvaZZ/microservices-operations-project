@@ -1,7 +1,7 @@
-import type { FastifyInstance } from 'fastify'
+import type { FastifyInstance } from "fastify";
 
-import { authenticate } from './controllers/AuthenticationController'
+import { authenticate } from "./controllers/AuthenticationController";
 
 export async function appRoutes(app: FastifyInstance) {
-	app.post('/sessions', authenticate)
+	app.post("/sessions", authenticate);
 }
