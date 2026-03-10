@@ -1,0 +1,18 @@
+name: CI ms-auth workflow
+
+on:
+    push:
+        paths: 
+            - 'ms-auth/**'
+
+    pull_request:
+        paths: 
+            - 'ms-auth/**'
+
+jobs:
+    lint:
+        uses: ./.github/workflows/ms-auth-lint-dev.yml
+
+    unit-tests:
+        needs: lint
+        uses: ./.github/workflows/ms-auth-unit-tests-dev.yml

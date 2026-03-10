@@ -1,0 +1,25 @@
+name: Unit tests
+
+on:
+    workflow_call: 
+
+jobs:
+    unit-tests-ms-auth-dev:
+        runs-on: ubuntu-latest
+
+        defaults:
+            run:
+                working-directory: ms-auth
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                node-version: 22
+                cache: 'yarn'
+                cache-dependency-path: ms-auth/yarn.lock
+
+            - run: yarn install --frozen-lockfile
+
+            - run: yarn run test
