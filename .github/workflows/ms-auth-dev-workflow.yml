@@ -9,6 +9,8 @@ on:
         paths: 
             - 'ms-auth/**'
 
+    workflow_dispatch:
+
 jobs:
     lint:
         uses: ./.github/workflows/ms-auth-lint-dev.yml
