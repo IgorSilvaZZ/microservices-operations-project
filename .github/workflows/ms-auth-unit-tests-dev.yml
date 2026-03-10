@@ -1,7 +1,8 @@
 name: Unit tests
 
 on:
-    workflow_call: 
+    workflow_call:
+    workflow_dispatch:
 
 jobs:
     unit-tests-ms-auth-dev:
