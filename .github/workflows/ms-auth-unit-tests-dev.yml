@@ -19,7 +19,7 @@ jobs:
               with:
                 node-version: 22
                 cache: 'yarn'
-                cache-dependency-path: ms-auth/yarn.lock
+                cache-dependency-path: ./yarn.lock
 
             - run: yarn install --frozen-lockfile
 
