@@ -1,16 +1,16 @@
-name: Lint Biome
+name: Lint Ms-Orders Biome
 
 on:
-    workflow_call: 
+    workflow_call:
     workflow_dispatch:
 
 jobs:
-    lint-ms-auth-dev:
+    lint-ms-orders:
         runs-on: ubuntu-latest
 
         defaults:
             run:
-                working-directory: ms-auth
+                working-directory: ms-orders
 
         permissions: 
             contents: read
