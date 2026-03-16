@@ -22,16 +22,35 @@ on:
     workflow_dispatch:
 
 jobs:
+    build-package:
+        name: Build Shared Package
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                node-version: 22
+                cache: 'yarn'
+                cache-dependency-path: yarn.lock
+        
+            - run: yarn install --frozen-lockfile
+        
+            - run: yarn operations:build
+
     lint-ms-auth:
+        needs: build-package
         uses: ./.github/workflows/ms-auth-lint.yml
 
     lint-ms-orders:
+        needs: build-package
         uses: ./.github/workflows/ms-orders-lint.yml
 
     tests-ms-auth:
         name: Run Unit Tests Ms-Auth
         runs-on: ubuntu-latest
-        needs: lint-ms-auth
+        needs: [build-package, lint-ms-auth]
 
         steps:
             - uses: actions/checkout@v4
@@ -49,7 +68,7 @@ jobs:
     tests-ms-orders:
         name: Run Unit Tests Ms-Orders
         runs-on: ubuntu-latest
-        needs: lint-ms-orders
+        needs: [build-package, lint-ms-orders]
 
         steps:
             - uses: actions/checkout@v4

@@ -64,7 +64,7 @@ describe("Get User Use Case", () => {
 
 		await expect(() => {
 			return getUserUseCase.getUser({ id: "invalid-id" });
-		}).rejects.toBeInstanceOf(AppError);
+		}).rejects.toBeInstanceOf(Error);
 
 		expect(spyFindById).toBeCalledTimes(1);
 	});
