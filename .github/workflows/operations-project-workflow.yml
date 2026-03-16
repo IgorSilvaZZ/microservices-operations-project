@@ -62,6 +62,8 @@ jobs:
                 cache-dependency-path: yarn.lock
 
             - run: yarn install --frozen-lockfile
+
+            - run: yarn operations:build
             
             - run: yarn auth:test
 
@@ -80,5 +82,7 @@ jobs:
                 cache-dependency-path: yarn.lock
 
             - run: yarn install --frozen-lockfile
+
+            - run: yarn operations:build
             
             - run: yarn orders:test
