@@ -1,4 +1,4 @@
-name: Operations Project workflow
+name: Operations Project Workflow
 
 on:
     push:
@@ -23,7 +23,7 @@ on:
 
 jobs:
     build-package:
-        name: Build Shared Package
+        name: Build Operations Package
         runs-on: ubuntu-latest
 
         steps:
@@ -38,6 +38,12 @@ jobs:
             - run: yarn install --frozen-lockfile
         
             - run: yarn operations:build
+
+            - uses: actions/upload-artifact@v4
+              with:
+                name: operations-package-dist
+                path: packages/operations-package/dist
+                retention-days: 1
 
     lint-ms-auth:
         needs: build-package
@@ -63,7 +69,10 @@ jobs:
 
             - run: yarn install --frozen-lockfile
 
-            - run: yarn operations:build
+            - uses: actions/download-artifact@v4
+              with:
+                name: operations-package-dist
+                path: packages/operations-package/dist
             
             - run: yarn auth:test
 
@@ -83,6 +92,9 @@ jobs:
 
             - run: yarn install --frozen-lockfile
 
-            - run: yarn operations:build
+            - uses: actions/download-artifact@v4
+              with:
+                name: operations-package-dist
+                path: packages/operations-package/dist
             
             - run: yarn orders:test
