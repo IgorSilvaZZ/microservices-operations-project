@@ -1,20 +1,24 @@
 import { OperationsOrders } from "@domain/entities/OperationsOrders";
-import type { OperationsOrdersCreateRequest } from "@domain/ports/OperationsOrdersCreate";
-import type { OperationsOrdersRepository } from "@domain/ports/OperationsOrdersRepository";
+import type {
+	OperationsOrdersCreateData,
+	OperationsOrdersRepository,
+} from "@domain/ports/OperationsOrdersRepository";
 
 export class OperationsOrdersRepositoryFakeAdapter
 	implements OperationsOrdersRepository
 {
 	public operationsOrders: OperationsOrders[] = [];
 
-	async create(data: OperationsOrdersCreateRequest): Promise<OperationsOrders> {
-		const orderOperation = new OperationsOrders({
-			operationId: data.operationId,
-			orderId: data.orderId,
+	async create(data: OperationsOrdersCreateData): Promise<OperationsOrders[]> {
+		const operationsOrders = data.orderIds.map((orderId) => {
+			return new OperationsOrders({
+				operationId: data.operationId,
+				orderId,
+			});
 		});
 
-		this.operationsOrders.push(orderOperation);
+		this.operationsOrders = [...this.operationsOrders, ...operationsOrders];
 
-		return orderOperation;
+		return operationsOrders;
 	}
 }
