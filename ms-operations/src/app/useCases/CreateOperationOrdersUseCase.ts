@@ -10,8 +10,8 @@ import { AppError, type RabbitMQClientPort } from "operations-package";
 
 export class CreateOperationOrdersUseCase implements OperationsOrdersCreate {
 	constructor(
-		private operationsOrdersRepository: OperationsOrdersRepository,
 		private operationRepository: OperationRepository,
+		private operationsOrdersRepository: OperationsOrdersRepository,
 		private rabbitMqClient: RabbitMQClientPort,
 	) {}
 
