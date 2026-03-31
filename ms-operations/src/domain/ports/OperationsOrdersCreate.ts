@@ -10,6 +10,7 @@ export interface OperationsOrdersCreateResponse {
 	userId: string;
 	number: number;
 	status: OperationsStatusEnum;
+	operationId: string;
 }
 
 // Caso de uso que condiz com a criação de operação e linkando pedidos com operações

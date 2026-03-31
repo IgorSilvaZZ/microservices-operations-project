@@ -6,6 +6,7 @@ import type {
 	OperationsOrdersCreateResponse,
 } from "@domain/ports/OperationsOrdersCreate";
 import type { OperationsOrdersRepository } from "@domain/ports/OperationsOrdersRepository";
+import type { Order } from "@domain/ports/Order";
 import { AppError, type RabbitMQClientPort } from "operations-package";
 
 export class CreateOperationOrdersUseCase implements OperationsOrdersCreate {
@@ -27,15 +28,14 @@ export class CreateOperationOrdersUseCase implements OperationsOrdersCreate {
 			throw new AppError("Operation already exists by number!");
 		}
 
-		const { data: ordersUser } = await this.rabbitMqClient.rpcCall(
+		const { data: ordersUser } = (await this.rabbitMqClient.rpcCall(
 			"GET_ORDERS_BY_USER",
 			{
 				userId,
 			},
-		);
+		)) as { data: Order[] };
 
-		// biome-ignore lint/suspicious/noExplicitAny: <Aqui não precisamos saber qual é o tipo do pedido>
-		if (!ordersUser.some((order: any) => orderIds.includes(order.id))) {
+		if (!ordersUser.some((order) => orderIds.includes(order.id))) {
 			throw new AppError("Order informed not exists");
 		}
 
@@ -59,6 +59,7 @@ export class CreateOperationOrdersUseCase implements OperationsOrdersCreate {
 				userId,
 				number,
 				status,
+				operationId,
 			};
 		} catch (error) {
 			console.log(error);
