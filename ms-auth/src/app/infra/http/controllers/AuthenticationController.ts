@@ -12,10 +12,10 @@ export async function authenticate(req: FastifyRequest, rep: FastifyReply) {
 
 	const authenticateUserUseCase = makeAuthenticateUserUseCase();
 
-	const { user, token } = await authenticateUserUseCase.authenticate({
+	const { user } = await authenticateUserUseCase.authenticate({
 		email,
 		password,
 	});
 
-	return rep.status(200).send({ user, token });
+	return rep.status(200).send({ user });
 }

@@ -1,6 +1,6 @@
 import { UserDomainToNormalizedMapper } from "@app/infra/mappers/UserDomainToNormalizedMapper";
 import { AppError } from "@app/shared/AppErrors";
-import type { AuthenticateProvider } from "@ports/AuthenticateProvider";
+/* import type { AuthenticateProvider } from "@ports/AuthenticateProvider"; */
 import type {
 	AuthenticateUser,
 	AuthenticateUserRequest,
@@ -13,7 +13,7 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 	constructor(
 		private userRepository: UserRepository,
 		private passwordHasher: PasswordHasher,
-		private authenticationProvider: AuthenticateProvider,
+		/* private authenticationProvider: AuthenticateProvider, */
 	) {}
 
 	async authenticate({
@@ -31,14 +31,13 @@ export class AuthenticateUserUseCase implements AuthenticateUser {
 		}
 
 		try {
-			const { accessToken } = await this.authenticationProvider.authenticate(
+			/* const { accessToken } = await this.authenticationProvider.authenticate(
 				email,
 				password,
-			);
+			); */
 
 			return {
 				user: UserDomainToNormalizedMapper.toNormalized(user),
-				cognitoAccessToken: accessToken,
 			};
 		} catch (error) {
 			console.log(error);

@@ -16,13 +16,12 @@ export async function authenticateUser(req: FastifyRequest, rep: FastifyReply) {
 
 	const { data } = await broker.rpcCall(AUTHENTICATE_QUEUE, requestPayload);
 
-	const { user, cognitoAccessToken } = data;
+	const { user } = data;
 
 	const token = await rep.jwtSign({
 		sub: user.id,
 		email: user.email,
 		permissions: user.permissions,
-		cognitoAccessToken,
 	});
 
 	return rep.status(200).send({

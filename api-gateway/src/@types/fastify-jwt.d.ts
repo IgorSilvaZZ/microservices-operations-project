@@ -6,7 +6,6 @@ declare module "@fastify/jwt" {
 			sub: string;
 			email: string;
 			permissions: string[];
-			cognitoAccessToken: string;
 		};
 	}
 }

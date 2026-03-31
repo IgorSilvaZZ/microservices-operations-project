@@ -15,7 +15,7 @@ export interface AuthenticateUserResponse {
 		profile: string;
 		permissions: string[];
 	};
-	cognitoAccessToken: string;
+	/* cognitoAccessToken: string; */
 }
 
 export interface AuthenticateUser {
